@@ -50,11 +50,11 @@ function validEmailDup($email)
         $stmt = queryPost($dbh, $sql, $data);
         //クエリ結果の値を取得
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!empty($result)) {
+        if (!empty($result['count(*)'])) {
             $err_msg['email'] = MSG08;
         }
     } catch (\Exception $e) {
-        error_log('エラー発生：', $e->getMessage());
+        error_log('エラー発生：' . $e->getMessage());
         $err_msg['common'] = MSG07;
     }
 }
@@ -80,7 +80,7 @@ function validMinLen($str, $key, $min = 6)
 //バリデーション関数（最大文字数チェック）
 function validMaxLen($str, $key, $max = 256)
 {
-    if (mb_strlen($str) > $max = 256) {
+    if (mb_strlen($str) > $max) {
         global $err_msg;
         $err_msg[$key] = MSG06;
     }
@@ -134,7 +134,7 @@ if (!empty($_POST)) {
     //変数にユーザー情報を代入
     $email = $_POST['email'];
     $pass = $_POST['pass'];
-    $pass_re = $POST['pass_re'];
+    $pass_re = $_POST['pass_re'];
 
     //未入力チェック
     validRequired($email, 'email');
@@ -169,22 +169,22 @@ if (!empty($_POST)) {
 
             if (empty($err_msg)) {
 
-                //例外処置
+                //例外処理
                 try {
                     //DBへ接続
-                    $dbh - dbConnect();
-                    //SQL文生成
+                    $dbh = dbConnect();
+                    //SQL文作成
                     $sql = 'INSERT INTO users (email,password,login_time,create_date) VALUES(:email,:pass,:login_time,:create_date)';
                     $data = array(
-                        'email' => $email, ':pass' => password_hash($pass, PASSWORD_DEFAULT),
+                        ':email' => $email, ':pass' => password_hash($pass, PASSWORD_DEFAULT),
                         ':login_time' => date('Y-m-d H:i:s'),
-                        ':create_date' => date('y-m-d H:i:s')
+                        ':create_date' => date('Y-m-d H:i:s')
                     );
 
                     //クエリ実行
                     queryPost($dbh, $sql, $data);
 
-                    header("Location:mypage.html"); //マイページへ
+                    header("Location:signup.php"); //マイページへ
 
                 } catch (\Exception $e) {
                     error_log('エラー発生:' . $e->getMessage());
@@ -216,8 +216,8 @@ if (!empty($_POST)) {
             <h1><a href="index.html">Shoe You</a></h1>
             <nav id="top-nav">
                 <ul>
-                    <li><a href="index.html" class="btn btn-primary">Sign Up</a></li>
-                    <li><a href=login.html>Login</a></li>
+                    <li><a href="signup.php" class="btn btn-primary">Sign Up</a></li>
+                    <li><a href="login.php">Login</a></li>
                 </ul>
             </nav>
         </div>
