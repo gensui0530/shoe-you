@@ -1,8 +1,0 @@
-[29-Apr-2020 16:31:34 UTC] PHP Notice:  Undefined variable: POST in /Applications/MAMP/htdocs/output/shoe_you/signup.php on line 137
-[30-Apr-2020 13:27:37 UTC] エラー発生：SQLSTATE[HY000] [1049] Unknown database 'she_you'
-[30-Apr-2020 13:35:09 UTC] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: parameter was not defined in /Applications/MAMP/htdocs/output/shoe_you/signup.php on line 124
-[30-Apr-2020 13:47:11 UTC] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number: parameter was not defined in /Applications/MAMP/htdocs/output/shoe_you/signup.php on line 124
-[30-Apr-2020 13:47:11 UTC] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY093]: Invalid parameter number in /Applications/MAMP/htdocs/output/shoe_you/signup.php on line 124
-[30-Apr-2020 13:52:25 UTC] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY000]: General error: 1364 Field 'age' doesn't have a default value in /Applications/MAMP/htdocs/output/shoe_you/signup.php on line 124
-[30-Apr-2020 13:54:12 UTC] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY000]: General error: 1364 Field 'age' doesn't have a default value in /Applications/MAMP/htdocs/output/shoe_you/signup.php on line 124
-[30-Apr-2020 14:01:49 UTC] PHP Warning:  PDOStatement::execute(): SQLSTATE[HY000]: General error: 1364 Field 'zip' doesn't have a default value in /Applications/MAMP/htdocs/output/shoe_you/signup.php on line 124
