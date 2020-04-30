@@ -29,7 +29,7 @@ function validRequired($str, $key)
 //バリデーション関数（email形式チェック）
 function validEmail($str, $key)
 {
-    if (!preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $str)) {
+   if (!preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $str)) {
         global $err_msg;
         $err_msg[$key] = MSG02;
     }
