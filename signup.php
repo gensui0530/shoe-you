@@ -29,7 +29,7 @@ function validRequired($str, $key)
 //バリデーション関数（email形式チェック）
 function validEmail($str, $key)
 {
-   if (!preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $str)) {
+    if (!preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $str)) {
         global $err_msg;
         $err_msg[$key] = MSG02;
     }
@@ -205,6 +205,7 @@ if (!empty($_POST)) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ユーザー登録 | Shoe you </title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 </head>
 
@@ -232,7 +233,7 @@ if (!empty($_POST)) {
 
 
                 <form class="form" action="" method="post">
-                    <h2 class="title">ユーザー登録</h2>
+                    <h2 class="title">Sign Up!!</h2>
                     <div class="area-msg">
                         <?php
                         if (!empty($err_msg['common'])) echo $err_msg['common'];
@@ -268,7 +269,7 @@ if (!empty($_POST)) {
                         ?>
                     </div>
                     <div class="btn-container">
-                        <input type="submit" class="btn btn-mid" value="登録する">
+                        <input type="submit" class="btn btn-mid" value="登録">
                     </div>
 
                 </form>
@@ -283,7 +284,7 @@ if (!empty($_POST)) {
         Copyright <a href="">Shoe You</a>. All Rights Reserved.
     </footer>
 
-    <script src="js/vendor/jquery-2.2.2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
     <script>
         $(function() {
             var $ftr = $('#footer');
