@@ -1,132 +1,12 @@
 <?php
+//共有変数・関数ファイルを読み込み
+require('function.php');
 
-//ログを取るか
-ini_set('log_errors', 'on');
-//ログの出力ファイルを指定
-ini_set('error_log', 'php.log');
+debug('===========================================================');
+debug('ログインページ');
+debug('===========================================================');
+debugLogStart();
 
-//エラーメッセージを定数に設定
-define('MSG01', '入力必須です');
-define('MSG02', 'Emailの形式で入力してください');
-define('MSG03', 'パスワードが合っていません');
-define('MSG04', '半角英数字のみご利用いただけます');
-define('MSG05', '6文字以上で入力してくだい');
-define('MSG06', '256文字以内で入力してください');
-define('MSG07', 'エラーが発生しました。しばらく経ってからやり直してください');
-define('MSG08', 'そのEmailは既に登録されています');
-
-//エラーメッセージ格納用の配列
-$err_msg = array();
-
-//バリデーション関数　（未入力チェック）
-function validRequired($str, $key)
-{
-    if (empty($str)) {
-        global $err_msg;
-        $err_msg[$key] = MSG01;
-    }
-}
-//バリデーション関数（email形式チェック）
-function validEmail($str, $key)
-{
-    if (!preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $str)) {
-        global $err_msg;
-        $err_msg[$key] = MSG02;
-    }
-}
-
-
-function validEmailDup($email)
-{
-    global $err_msg;
-    //例外処理
-    try {
-        //dbへ接続
-        $dbh = dbConnect();
-        //SQL文作成
-        $sql = 'SELECT count(*) FROM users WHERE email = :email';
-        $data = array(':email' => $email);
-        //クエリの実行
-        $stmt = queryPost($dbh, $sql, $data);
-        //クエリ結果の値を取得
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!empty($result['count(*)'])) {
-            $err_msg['email'] = MSG08;
-        }
-    } catch (\Exception $e) {
-        error_log('エラー発生：' . $e->getMessage());
-        $err_msg['common'] = MSG07;
-    }
-}
-
-//バリデーション関数(同値チェック)
-function validMatch($str1, $str2, $key)
-{
-    if ($str1 !== $str2) {
-        global $err_msg;
-        $err_msg[$key] = MSG03;
-    }
-}
-
-//バリデーション関数（最小文字数チェック）
-function validMinLen($str, $key, $min = 6)
-{
-    if (mb_strlen($str) < $min) {
-        global $err_msg;
-        $err_msg[$key] = MSG05;
-    }
-}
-
-//バリデーション関数（最大文字数チェック）
-function validMaxLen($str, $key, $max = 256)
-{
-    if (mb_strlen($str) > $max) {
-        global $err_msg;
-        $err_msg[$key] = MSG06;
-    }
-}
-
-//バリデーション関数（半角チェック）
-function validHalf($str, $key)
-{
-    if (!preg_match("/^[a-zA-Z0-9]+$/", $str)) {
-        global $err_msg;
-        $err_msg[$key] = MSG04;
-    }
-}
-
-//DB接続関数
-function dbConnect()
-{
-
-    //DBへの接続準備
-    $dsn = 'mysql:dbname=shoe_you;host=localhost;charset=utf8';
-    $user = 'root';
-    $password = 'root';
-    $options = array(
-
-        //SQL実行失敗時にはエラーコードのみ設定
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT,
-        //デフォルトフェッチモードを連想配列形式に設定
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        //バッファードクエリを使う（一度に結果セットを全て取得し，サーバー負荷を軽減）
-        //SELECTで得た結果に対してもromCountメソッドを使えるようにする
-        PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
-
-    );
-    //PDOオブジェクト生成（DBへ接続）
-    $dbh = new PDO($dsn, $user, $password, $options);
-    return $dbh;
-}
-function queryPost($dbh, $sql, $data)
-{
-
-    //クエリー作成
-    $stmt = $dbh->prepare($sql);
-    //プレースホルダーに値をセットし，SQL文を実行
-    $stmt->execute($data);
-    return $stmt;
-}
 
 //post送信されていた場合
 if (!empty($_POST)) {
@@ -184,7 +64,7 @@ if (!empty($_POST)) {
                     //クエリ実行
                     queryPost($dbh, $sql, $data);
 
-                    header("Location:signup.php"); //マイページへ
+                    header("Location:mypage.html"); //マイページへ
 
                 } catch (\Exception $e) {
                     error_log('エラー発生:' . $e->getMessage());
@@ -203,7 +83,7 @@ if (!empty($_POST)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>ユーザー登録 | Shoe you </title>
+    <title>Sign uo > Shoe you </title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
