@@ -3,7 +3,7 @@
 require('function.php');
 
 debug('===========================================================');
-debug('ログインページ');
+debug('新規登録ページ');
 debug('===========================================================');
 debugLogStart();
 
@@ -62,10 +62,25 @@ if (!empty($_POST)) {
                     );
 
                     //クエリ実行
-                    queryPost($dbh, $sql, $data);
+                    $stmt = queryPost($dbh, $sql, $data);
 
-                    header("Location:mypage.html"); //マイページへ
+                    //クエリ成功の場合
+                    if ($stmt) {
+                        //ログイン有効期限（デフォルトを1時間とする）
+                        $sesLimit = 60 * 60;
+                        //最終ログイン日時を現在日時に
+                        $_SESSION['login_date'] = time();
+                        $_SESSION['login_limit'] = $sesLimit;
+                        //ユーザーIDを格納
+                        $_SESSION['user_id'] = $dbh->lastInsertId();
 
+                        debug('セッション変数の中身：' . print_r($_SESSION, true));
+
+                        header("Location:mypage.php"); //マイページへ
+                    } else {
+                        error_log('クエリ失敗しました');
+                        $err_msg['common'] = MSG07;
+                    }
                 } catch (\Exception $e) {
                     error_log('エラー発生:' . $e->getMessage());
                     $err_msg['common'] =  MSG07;
@@ -76,33 +91,17 @@ if (!empty($_POST)) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="ja">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sign uo > Shoe you </title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-</head>
+<?php
+$siteTitle = 'Sign up';
+require('head.php');
+?>
 
 <body class="page-signup page-1colum">
 
-    <!-- メニュー　-->
-    <header>
-        <div class="site-width">
-            <h1><a href="index.html">Shoe You</a></h1>
-            <nav id="top-nav">
-                <ul>
-                    <li><a href="signup.php" class="btn btn-primary">Sign Up</a></li>
-                    <li><a href="login.php">Login</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+
+    <?php
+    require('header.php');
+    ?>
 
     <!-- メインコンテンツ　-->
     <div id="contents" class="site-width">
@@ -159,22 +158,6 @@ if (!empty($_POST)) {
 
     </div>
 
-    <!-- footer -->
-    <footer id="footer">
-        Copyright <a href="">Shoe You</a>. All Rights Reserved.
-    </footer>
-
-    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
-    <script>
-        $(function() {
-            var $ftr = $('#footer');
-            if (window.innerHeight > $ftr.offset().top + $ftr.outerHeight()) {
-                $ftr.attr({
-                    'style': 'position:fixed; top:' + (window.innerHeight - $ftr.outerHeight()) + 'px;'
-                });
-            }
-        });
-    </script>
-</body>
-
-</html>
+    <?php
+    require('footer.php');
+    ?>

@@ -80,7 +80,7 @@ if (!empty($_POST)) {
 
                 debug('セッション変数の中身:' . print_r($_SESSION, true));
                 debug('マイページへ遷移します.');
-                header("Location:mypage.html"); //マイページへ
+                header("Location:mypage.php"); //マイページへ
                 exit;
             } else {
                 debug('パスワードがアンマッチです.');
@@ -95,33 +95,16 @@ if (!empty($_POST)) {
 debug('画面表示処理終了<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
 ?>
 
-<!DOCTYPE html>
-<html lang="ja">
+<?php
+$siteTitle = 'Login';
+require('head.php');
+?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login > Shoe you </title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-</head>
+<body class="page-login page-1colum">
 
-<body class="page-signup page-1colum">
-
-    <!-- メニュー　-->
-    <header>
-        <div class="site-width">
-            <h1><a href="index.html">Shoe You</a></h1>
-            <nav id="top-nav">
-                <ul>
-                    <li><a href="signup.php" class="btn btn-primary">Sign Up</a></li>
-                    <li><a href="login.php">Login</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <?php
+    require('header.php');
+    ?>
 
     <!-- メインコンテンツ　-->
     <div id="contents" class="site-width">
@@ -168,22 +151,7 @@ debug('画面表示処理終了<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
             </div>
         </section>
     </div>
-    <!-- footer -->
-    <footer id="footer">
-        Copyright <a href="">Shoe You</a>. All Rights Reserved.
-    </footer>
 
-    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
-    <script>
-        $(function() {
-            var $ftr = $('#footer');
-            if (window.innerHeight > $ftr.offset().top + $ftr.outerHeight()) {
-                $ftr.attr({
-                    'style': 'position:fixed; top:' + (window.innerHeight - $ftr.outerHeight()) + 'px;'
-                });
-            }
-        });
-    </script>
-</body>
-
-</html>
+    <?php
+    require('footer.php');
+    ?>

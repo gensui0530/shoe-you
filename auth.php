@@ -20,9 +20,17 @@ if (!empty($_SESSION['login_date'])) {
         debug('ログイン有効期限以内です．');
         //最終ログイン日時を現在日時に更新
         $_SESSION['login_date'] = time();
-        debug('マイページへ遷移します．');
-        header("Location:mypage.html"); //マイページへ
+        //現在実行中のスクリプトファイル名がlogin.phpの場合
+        //$_SERVER['PHP_SELF']はドメインからのパスを返すため，login.phpが返ってくるので，
+        //さらにbasename関数を使うことでファイル名だけを取り出せる
+        if (basename($_SERVER['PHP_SELF']) === 'login.php') {
+            debug('マイページへ遷移します．');
+            header("Location:mypage.php"); //マイページへ
+        }
     }
 } else {
     debug('未ログインユーザーです．');
+    if (basename($_SERVER['PHP_SELF']) !== 'login.php') {
+        header("Location:login.php"); //ログインページへ
+    }
 }
