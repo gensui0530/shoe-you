@@ -62,6 +62,10 @@ define('MSG06', '256文字以内で入力してください');
 define('MSG07', 'エラーが発生しました。しばらく経ってからやり直してください');
 define('MSG08', 'そのEmailは既に登録されています');
 define('MSG09', 'メールアドレスまたはパスワードが違います');
+define('MSG10', '電話番号の形式が違います');
+define('MSG11', '郵便番号の形式が違います');
+
+
 
 //================================
 // バリデーション関数
@@ -95,7 +99,7 @@ function validEmailDup($email)
         //dbへ接続
         $dbh = dbConnect();
         //SQL文作成
-        $sql = 'SELECT count(*) FROM users WHERE email = :email';
+        $sql = 'SELECT count(*) FROM users WHERE email = :email AND delete_flg = 0 ';
         $data = array(':email' => $email);
         //クエリの実行
         $stmt = queryPost($dbh, $sql, $data);
@@ -146,6 +150,35 @@ function validHalf($str, $key)
     }
 }
 
+//電話番号形式チェック
+function validTel($str, $key)
+{
+    if (!preg_match("/0\d{1,4}\d{1,4}\d{4}/", $str)) {
+        global $err_msg;
+        $err_msg[$key] = MSG10;
+    }
+}
+
+//郵便番号形式チェック
+function validZip($str, $key)
+{
+    if (!preg_match("/^\d{7}$/", $str)) {
+        global $err_msg;
+        $err_msg[$key] = MSG11;
+    }
+}
+
+//半角数字チェック
+function validNumber($str, $key)
+{
+    if (!preg_match("/^[0-9]+$/", $str)) {
+        global $err_msg;
+        $err_msg[$key] = MSG04;
+    }
+}
+
+
+
 //================================
 // データベース
 //================================
@@ -179,4 +212,61 @@ function queryPost($dbh, $sql, $data)
     //プレースホルダーに値をセットし，SQL文を実行
     $stmt->execute($data);
     return $stmt;
+}
+function getUser($u_id)
+{
+    debug('ユーザー情報を取得しています．');
+    //例外処理
+    try {
+        //DBへ接続
+        $dbh = dbConnect();
+        //SQL文作成
+        $sql = 'SELECT * FROM users WHERE id = :u_id';
+        $data = array(':u_id' => $u_id);
+        //クエリ実行
+        $stmt = queryPost($dbh, $sql, $data);
+
+        //クエリ成功の場合
+        if ($stmt) {
+            debug('クエリ成功');
+        } else {
+            debug('クエリ失敗しました');
+        }
+    } catch (\Exception $e) {
+        error_log('エラー発生:' . $e->getMessage());
+    }
+
+    //クエリ結果のデータを返却
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+//フォーム入力保持
+function getFormData($str)
+{
+    global $dbFormData;
+    global $err_msg;
+    //ユーザーデータがある場合
+    if (!empty($dbFormData)) {
+        //フォームのエラーがある場合
+        if (!empty($err_msg[$str])) {
+            //POSTにデータがある場合
+            if (isset($_POST[$str])) {
+                return $_POST[$str];
+            } else {
+                //ない場合（フォームにエラーがある＝POSTされているはずなので，あり得ないが　）
+                return $dbFormData[$str];
+            }
+        } else {
+            //POSTにデータがあり，DBの情報と違う場合（このフォームに変更して居てエラーはないが，他のフォームで引っかかっている）
+            if (isset($_POST[$str]) && $_POST[$str] !== $dbFormData[$str]) {
+                return $_POST[$str];
+            } else {
+                return $dbFormData[$str];
+            }
+        }
+    } else {
+        if (isset($_POST[$str])) {
+            return $_POST[$str];
+        }
+    }
 }

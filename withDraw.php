@@ -22,9 +22,9 @@ if (!empty($_POST)) {
     try {
         //DBへ接続する
         $dbh = dbConnect();
-        //SQL文作成
+        //SQL文作 成
         $sql1 = 'UPDATE users SET delete_flg = 1 WHERE id = :us_id';
-        $sql2 = 'UPDATE product SET delete_flg = 1 WHERE user_id = :us_id';
+        $sql2 = 'UPDATE shoes SET delete_flg = 1 WHERE user_id = :us_id';
         $sql3 = 'UPDATE `like` SET delete_flg = 1 WHERE user_id = :us_id';
         //データの流し込み
         $data = array(':us_id' => $_SESSION['user_id']);
