@@ -150,12 +150,13 @@ require('head.php');
                     </div>
                     <label class="<?php if (!empty($err_msg['username'])) echo 'err'; ?>">
                         名前
-                        <input type="text" name="username" value="<?php echo getFormData('username'); ?>">
+                        <input class="user_name" type="text" name="username" value="<?php echo getFormData('username'); ?>">
                     </label>
                     <div class="area-msg">
                         <?php
                         if (!empty($err_msg['username'])) echo $err_msg['username']; ?>
                     </div>
+
                     <div class="float-form1">
                         <label class="<?php if (!empty($err_msg['tel'])) echo 'err'; ?>">
                             TEL <span style="font-size:12px; margin-left:5px;"> ※ハイフン無しで入力下さい</span>
@@ -166,9 +167,9 @@ require('head.php');
                             if (!empty($err_msg['tel'])) echo $err_msg['tel
                         ']; ?>
                         </div>
-                    </div>
 
-                    <div class="float-form2">
+
+
                         <label class="<?php if (!empty($err_msg['zip'])) echo 'err'; ?>">
                             郵便番号 <span style="font-size:12px; margin-left:5px;"> ※ハイフン無しで入力下さい</span>
                             <input type="text" name="zip" value="<?php echo getFormData('zip'); ?>">
@@ -178,55 +179,56 @@ require('head.php');
                             if (!empty($err_msg['zip'])) echo $err_msg['zip
                         ']; ?>
                         </div>
-                    </div>
 
-                    <div class="float-form3">
+
+
                         <label class="<?php if (!empty($err_msg['addr'])) echo 'err'; ?>">
                             住所
-                            <input type="text" name="addr" value="<?php echo getFormData('addr'); ?>">
+                            <input class="address" type="text" name="addr" value="<?php echo getFormData('addr'); ?>">
                         </label>
                         <div class="area-msg">
                             <?php
                             if (!empty($err_msg['addr'])) echo $err_msg['addr']; ?>
                         </div>
-                    </div>
 
-                    <label class="<?php if (!empty($err_msg['email'])) echo 'err'; ?>">
-                        Email
-                        <input type="text" name="email" value="<?php echo getFormData('email'); ?>">
-                    </label>
-                    <div class="area-msg">
-                        <?php
-                        if (!empty($err_msg['email'])) echo $err_msg['email']; ?>
-                    </div>
 
-                    <label class="<?php if (!empty($err_msg['age'])) echo 'err'; ?>">
-                        年齢
-                        <input type="number" name="age" value="<?php echo getFormData('age'); ?>">
-                    </label>
-                    <div class="area-msg">
-                        <?php
-                        if (!empty($err_msg['age'])) echo $err_msg['age']; ?>
+                        <label class="<?php if (!empty($err_msg['email'])) echo 'err'; ?>">
+                            Email
+                            <input type="text" name="email" value="<?php echo getFormData('email'); ?>">
+                        </label>
+                        <div class="area-msg">
+                            <?php
+                            if (!empty($err_msg['email'])) echo $err_msg['email']; ?>
+                        </div>
                     </div>
+                    <div class="float-form2">
+                        <label class="<?php if (!empty($err_msg['age'])) echo 'err'; ?>">
+                            年齢
+                            <input type="number" name="age" value="<?php echo getFormData('age'); ?>">
+                        </label>
+                        <div class="area-msg">
+                            <?php
+                            if (!empty($err_msg['age'])) echo $err_msg['age']; ?>
+                        </div>
 
-                    <label class="<?php if (!empty($err_msg['size'])) echo 'err'; ?>">
-                        マイサイズ
-                        <input type="text" name="size" value="<?php echo getFormData('size'); ?>"> cm
-                    </label>
-                    <div class="area-msg">
-                        <?php
-                        if (!empty($err_msg['size'])) echo $err_msg['size']; ?>
+                        <label class="<?php if (!empty($err_msg['size'])) echo 'err'; ?>">
+                            マイサイズ
+                            <input　class="my_size" type="text" name="size" value="<?php echo getFormData('size'); ?>">
+                        </label>
+                        <div class="area-msg">
+                            <?php
+                            if (!empty($err_msg['size'])) echo $err_msg['size']; ?>
+                        </div>
+
+                        <label class="<?php if (!empty($err_msg['size'])) echo 'err'; ?>">
+                            好きなブランド
+                            <input type="text" name="brand" value="<?php echo getFormData('brand'); ?>">
+                        </label>
+                        <div class="area-msg">
+                            <?php
+                            if (!empty($err_msg['brand'])) echo $err_msg['brand']; ?>
+                        </div>
                     </div>
-
-                    <label class="<?php if (!empty($err_msg['size'])) echo 'err'; ?>">
-                        好きなブランド
-                        <input type="text" name="brand" value="<?php echo getFormData('brand'); ?>">
-                    </label>
-                    <div class="area-msg">
-                        <?php
-                        if (!empty($err_msg['brand'])) echo $err_msg['brand']; ?>
-                    </div>
-
                     <div class="btn-container">
                         <input type="submit" class="btn btn-mid" value="変更する">
                     </div>
