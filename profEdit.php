@@ -156,7 +156,7 @@ require('head.php');
                         <?php
                         if (!empty($err_msg['username'])) echo $err_msg['username']; ?>
                     </div>
-
+                    
                     <div class="float-form1">
                         <label class="<?php if (!empty($err_msg['tel'])) echo 'err'; ?>">
                             TEL <span style="font-size:12px; margin-left:5px;"> ※ハイフン無しで入力下さい</span>

@@ -106,6 +106,10 @@ require('head.php');
     require('header.php');
     ?>
 
+    <p id="js-show-msg" style="display:none;" class="msg-slide">
+        <?php echo getSessionFlash('msg_success'); ?>
+    </p>
+
     <!-- メインコンテンツ　-->
     <div id="contents" class="site-width">
 
@@ -145,7 +149,7 @@ require('head.php');
                     <div class="btn-container">
                         <input type="submit" class="btn btn-mid" value="ログイン">
                     </div>
-                    パスワードを忘れた方は<a href="passRemindSend.html">コチラ</a>
+                    パスワードを忘れた方は<a href="passRemindSend.php">コチラ</a>
 
                 </form>
             </div>

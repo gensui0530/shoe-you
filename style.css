@@ -3,7 +3,7 @@ body {
   padding: 0;
   color: #444;
   line-height: 150%;
-  font-family: "Concert One", cursive;
+  font-family: 'Concert One', cursive;
 }
 
 h1,
@@ -33,13 +33,13 @@ a:hover {
     フォント
   ========================================*/
 .num {
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .price {
   display: block;
   font-weight: bold;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 /*トップバナー*/
 
@@ -62,7 +62,7 @@ header h1 {
   padding-left: 15px;
   text-align: center;
   font-size: 32px;
-  font-family: "Concert One", cursive;
+  font-family: 'Concert One', cursive;
   line-height: 80px;
 }
 
@@ -135,7 +135,7 @@ nav a:hover {
 
 section h1.title {
   text-align: center;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 #contents {
@@ -201,7 +201,7 @@ section h1.title {
   border-right: 7px solid transparent;
   border-bottom: 10px solid transparent;
   border-left: 7px solid transparent;
-  content: "";
+  content: '';
 }
 .page-logined #sidebar {
   margin: 0 0 0 20px;
@@ -266,7 +266,7 @@ footer a {
   background: #eee;
   color: black;
   text-decoration: none;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .pagination .list-item.active a {
@@ -303,7 +303,7 @@ footer a {
   padding-right: 5px;
   font-weight: bold;
   font-size: 18px;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 /*=========================================
     リスト
@@ -406,17 +406,17 @@ input[type="text"], input[type="password"]/* Lesson9で追加 */, input[type="nu
   background-color: #7ba6ef;
   border: none;
 }
-input[type="checkbox"] {
+input[type='checkbox'] {
   width: 18px;
   height: 18px;
   vertical-align: middle;
   background: #f6f5f5;
 }
-input[type="number"] {
+input[type='number'] {
   width: 100px;
   text-align: left;
 }
-input[type="submit"] {
+input[type='submit'] {
   font-size: 14px;
   margin: 15px 0;
   padding: 15px 30px;
@@ -429,7 +429,7 @@ input[type="submit"] {
 }
 
 select:hover,
-input[type="submit"]:hover {
+input[type='submit']:hover {
   cursor: pointer;
 }
 
@@ -520,8 +520,7 @@ input[type="submit"]:hover {
   top: 0;
   width: 100%;
   height: 40px;
-  background: rgba(255, 166, 0);
-  color: cornsilk;
+  background: rgba(255, 179, 0, 6);
   text-align: center;
   font-size: 16px;
   line-height: 40px;

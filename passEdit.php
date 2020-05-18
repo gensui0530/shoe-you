@@ -108,12 +108,7 @@ $siteTitle = 'パスワード変更';
 require('head.php');
 ?>
 
-<body class="page-passEdit page-2colum page-logined">
-    <style>
-        .from {
-            margin-top: 50px;
-        }
-    </style>
+<body class="page-signup page-1colum">
 
     <!-- メニュー　-->
     <?php
@@ -129,8 +124,10 @@ require('head.php');
         <h1 class="page-title"></h1>
         <!-- Main -->
         <section id="main">
-            <div class="form-container">
+            <div class="form-container" style="margin-top:40px;">
+
                 <form action="" method="post" class="form">
+                    <h2 class="title">パスワード編集</h2>
                     <div class="area-msg">
                         <?php
                         echo getErrMsg('common');
@@ -172,5 +169,9 @@ require('head.php');
 
 
     </div>
+    <!-- footer -->
+    <?php
+    require('footer.php');
+    ?>
 
 </body>
