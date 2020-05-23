@@ -69,9 +69,12 @@ define('MSG13', '古いパスワードが同じです');
 define('MSG14', '文字で入力してください');
 define('MSG15', '正しくありません');
 define('MSG16', '有効期限が切れています');
+define('MSG17', '半角英数字のみご利用いただけます');
 define('SUC01', 'パスワードを変更しました');
 define('SUC02', 'プロフィールを変更しました');
 define('SUC03', 'メールを送信しました');
+define('SUC04', '登録しました．');
+
 
 
 
@@ -88,7 +91,7 @@ $err_msg = array();
 //バリデーション関数　（未入力チェック）
 function validRequired($str, $key)
 {
-    if (empty($str)) {
+    if ($str === '') { //金額フォームなどなどを考えると数値の０はOKにし，空文字はダメにする
         global $err_msg;
         $err_msg[$key] = MSG01;
     }
@@ -185,7 +188,7 @@ function validNumber($str, $key)
 {
     if (!preg_match("/^[0-9]+$/", $str)) {
         global $err_msg;
-        $err_msg[$key] = MSG04;
+        $err_msg[$key] = MSG17;
     }
 }
 
@@ -209,6 +212,15 @@ function validPass($str, $key)
     validMaxLen($str, $key);
     //最小文字数チェック
     validMinLen($str, $key);
+}
+
+//selectboxチェック
+function validSelect($str, $key)
+{
+    if (!preg_match("/^[0-9]+$/", $str)) {
+        global $err_msg;
+        $err_msg[$key] = MSG15;
+    }
 }
 
 //エラーメッセージ表示
@@ -246,15 +258,29 @@ function dbConnect()
     $dbh = new PDO($dsn, $user, $password, $options);
     return $dbh;
 }
+//function queryPost($dbh, $sql, $data)
+//{
+
+//クエリー作成
+//$stmt = $dbh->prepare($sql);
+//プレースホルダーに値をセットし，SQL文を実行
+//$stmt->execute($data);
+//return $stmt;
+//}
 function queryPost($dbh, $sql, $data)
 {
-
     //クエリー作成
     $stmt = $dbh->prepare($sql);
-    //プレースホルダーに値をセットし，SQL文を実行
-    $stmt->execute($data);
+    //プレースホルダに値をセットし，SQL文を実行
+    if (!$stmt->execute($data)) {
+        debug('クエリに失敗しました．');
+        $err_msg['common'] = MSG07;
+        return 0;
+    }
+    debug('クエリ成功');
     return $stmt;
 }
+
 function getUser($u_id)
 {
     debug('ユーザー情報を取得しています．');
@@ -269,18 +295,77 @@ function getUser($u_id)
         $stmt = queryPost($dbh, $sql, $data);
 
         //クエリ成功の場合
+        // if ($stmt) {
+        //debug('クエリ成功');
+        //} else {
+        //debug('クエリ失敗しました');
+        //}
+        //クエリ結果のデータを１レコード返却
         if ($stmt) {
-            debug('クエリ成功');
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         } else {
-            debug('クエリ失敗しました');
+            return false;
         }
     } catch (\Exception $e) {
         error_log('エラー発生:' . $e->getMessage());
     }
 
     //クエリ結果のデータを返却
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+    //return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
+function getProduct($u_id, $p_id)
+{
+    debug('商品情報を取得しています');
+    debug('ユーザーID:' . $u_id);
+    debug('商品ID:' . $p_id);
+
+    //例外処理
+    try {
+        //DBへ接続
+        $dbh = dbConnect();
+        //SQL文作成
+        $sql = 'SELECT * FROM shoes WHERE user_id = :u_id AND id = :p_id AND delete_flg = 0';
+        $data = array(':u_id' => $u_id, ':p_id' => $p_id);
+        //クエリ実行
+        $stmt = queryPost($dbh, $sql, $data);
+
+        if ($stmt) {
+            //クエリ結果のデータを１レコード返却
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } else {
+            return false;
+        }
+    } catch (\Exception $e) {
+        error_log('エラー発生：' . $e->getMessage());
+    }
+}
+
+function getCategory()
+{
+    debug('カテゴリー情報を取得します．');
+    //例外処理
+    try {
+        //DBへ接続
+        $dbh = dbConnect();
+        //SQL文作成
+        $sql = 'SELECT * FROM category';
+        $data = array();
+        //クエリ実行
+        $stmt = queryPost($dbh, $sql, $data);
+
+
+        if ($stmt) {
+            // クエリ結果の全データを返却
+            return $stmt->fetchAll();
+        } else {
+            return false;
+        }
+    } catch (\Exception $e) {
+        error_log('エラー発生：' . $e->getMessage());
+    }
+}
+
 
 //================================
 // メール送信
@@ -356,4 +441,59 @@ function makeRandKey($length = 8)
         $str .= $chars[mt_rand(0, 61)];
     }
     return $str;
+}
+
+//画像処理
+function uploadImg($file, $key)
+{
+    debug('画像アップロード処理開始');
+    debug('FILE情報：' . print_r($file, true));
+
+    if (isset($file['error']) && is_int($file['error'])) {
+        try {
+            //バリデーション
+            // $file['error']の値を確認．配列内には『UPLOAD_ERR_OK』などの定数が入っている．
+            //『UPLOAD_ERR_OK』などの定数はphpでファイルアップロード時に自動的に定義されている．定数には値して０や１などの数値が入っている
+            switch ($file['error']) {
+                case UPLOAD_ERR_OK: //OK
+                    break;
+                case UPLOAD_ERR_NO_FILE: //ファイル未選択の場合
+                    throw new RuntimeException('ファイルが選択されていません');
+                case UPLOAD_ERR_INI_SIZE: //php.ini定義の最大サイズが超過した場合
+                    throw new RuntimeException('ファイルサイズが大きすぎます');
+                case UPLOAD_ERR_FORM_SIZE: // フォーム定義の最大サイズ超過した場合
+                    throw new RuntimeException('ファイルサイズが大きすぎます');
+                default: // その他の場合
+                    throw new RuntimeException('その他のエラーが発生しました');
+            }
+
+            // $file['mime']の値はブラウザ側で偽造可能なので，MIMEタイプを事前にチェックする
+            // exif_imagetype関数は『IMAGETYPE_GIF』『IMAGETYPE_JPEG』などの定数を返す
+            $type = @exif_imagetype($file['tmp_name']);
+            if (!in_array($type, [IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG], true)) { //第三引数にはtrueを設定すると厳密にチェックしてくれるので必ずつける
+                throw new RuntimeException('画像形式が未対応です');
+            }
+
+            // ファイルデータからSHA-1ハッシュを取ってファイル名を決定し，ファイルを保存する
+            // ハッシュ化しておかないとアップロードされたファイル名そのままで保存してしまうと同じファイル名がアップロードされる可能性あり．
+            // DBにパスを保存した場合，どっちの画像のパスなのか判断がつかなくなってしまう
+            //image_type_to_extension関数はファイルの拡張子を取得するもの
+            $path = 'uploads/' . sha1_file($file['tmp_name']) . image_type_to_extension($type);
+
+            if (!move_uploaded_file($file['tmp_name'], $path)) { //ファイルを移動する
+                throw new RuntimeException('ファイル保存時にエラーが発しました');
+            }
+            //保存したファイルパスのパーミッション（権限）を変更する
+            chmod($path, 0644);
+
+            debug('ファイルは正常にアップロードされました');
+            debug('ファイルパス：' . $path);
+            return $path;
+        } catch (RuntimeException $e) {
+
+            debug($e->getMessage());
+            global $err_msg;
+            $err_msg[$key] = $e->getMessage();
+        }
+    }
 }

@@ -103,12 +103,9 @@ if (!empty($_POST)) {
 
             // クエリ成功の場合
             if ($stmt) {
-                debug('クエリ成功．');
-                debug('マイページへ遷移します．');
+                $_SESSION['msg-success'] = SUC02;
+                debug('マイページへ遷移します');
                 header("Location:mypage.php"); //マイページへ
-            } else {
-                debug('クエリに失敗しました');
-                $err_msg['common'] = MSG08;
             }
         } catch (\Exception $e) {
             error_log('エラー発生:' . $e->getMessage());
@@ -130,6 +127,10 @@ require('head.php');
     <?php
     require('header.php');
     ?>
+
+    <p id="js-show-msg" style="display:none;" class="msg-slide">
+        <?php echo getSessionFlash('msg_success'); ?>
+    </p>
 
     <!-- メインコンテンツ　-->
     <div id="contents" class="site-width">
@@ -156,7 +157,7 @@ require('head.php');
                         <?php
                         if (!empty($err_msg['username'])) echo $err_msg['username']; ?>
                     </div>
-                    
+
                     <div class="float-form1">
                         <label class="<?php if (!empty($err_msg['tel'])) echo 'err'; ?>">
                             TEL <span style="font-size:12px; margin-left:5px;"> ※ハイフン無しで入力下さい</span>

@@ -454,7 +454,7 @@ input[type='submit']:hover {
   margin-bottom: 40px;
   text-align: center;
 }
-.form > .area-msg {
+.form .area-msg {
   padding: 0 0 15px 0;
   color: red;
   font-size: 14px;
@@ -494,6 +494,42 @@ input[type='submit']:hover {
 
 .float-form2 {
   float: left;
+}
+
+.form .area-drop {
+  margin-bottom: 15px;
+  width: 100%;
+  height: 140px;
+  background: #f6f5f4;
+  color: #ccc;
+  text-align: center;
+  line-height: 150px;
+  position: relative;
+  box-sizing: border-box;
+}
+.form .input-file {
+  opacity: 0;
+  width: 100%;
+  height: 140px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2; /* 必ずz-indexをつけないと登録画像を変更する際にドラッグ＆ドロップできなくなる*/
+}
+.form .prev-img {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.form .imgDrop-container {
+  width: 33.333%;
+  float: left;
+  padding-right: 15px;
+  box-sizing: border-box;
+}
+.form .counter-text {
+  text-align: right;
 }
 
 /* フォームグループ

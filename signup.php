@@ -77,10 +77,7 @@ if (!empty($_POST)) {
                         debug('セッション変数の中身：' . print_r($_SESSION, true));
 
                         header("Location:mypage.php"); //マイページへ
-                    } else {
-                        error_log('クエリ失敗しました');
-                        $err_msg['common'] = MSG07;
-                    }
+                       } 
                 } catch (\Exception $e) {
                     error_log('エラー発生:' . $e->getMessage());
                     $err_msg['common'] =  MSG07;
