@@ -74,6 +74,7 @@ define('SUC01', 'パスワードを変更しました');
 define('SUC02', 'プロフィールを変更しました');
 define('SUC03', 'メールを送信しました');
 define('SUC04', '登録しました．');
+define('SUC05', '購入されました．相手と連絡して手続きして下さい．');
 
 
 
@@ -274,6 +275,7 @@ function queryPost($dbh, $sql, $data)
     //プレースホルダに値をセットし，SQL文を実行
     if (!$stmt->execute($data)) {
         debug('クエリに失敗しました．');
+        debug('失敗したSQL：' . print_r($stmt, true));
         $err_msg['common'] = MSG07;
         return 0;
     }
@@ -289,18 +291,10 @@ function getUser($u_id)
         //DBへ接続
         $dbh = dbConnect();
         //SQL文作成
-        $sql = 'SELECT * FROM users WHERE id = :u_id　AND delete_flg = 0';
+        $sql = 'SELECT * FROM users WHERE id = :u_id AND delete_flg = 0';
         $data = array(':u_id' => $u_id);
         //クエリ実行
         $stmt = queryPost($dbh, $sql, $data);
-
-        //クエリ成功の場合
-        // if ($stmt) {
-        //debug('クエリ成功');
-        //} else {
-        //debug('クエリ失敗しました');
-        //}
-        //クエリ結果のデータを１レコード返却
         if ($stmt) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } else {
@@ -391,6 +385,13 @@ function sendMail($from, $to, $subject, $comment)
 //===============================
 //その他
 //===============================
+
+//サニタイズ
+function sanitize($str)
+{
+    return htmlspecialchars($str, ENT_QUOTES);
+}
+
 //フォーム入力保持
 function getFormData($str)
 {
@@ -402,22 +403,22 @@ function getFormData($str)
         if (!empty($err_msg[$str])) {
             //POSTにデータがある場合
             if (isset($_POST[$str])) {
-                return $_POST[$str];
+                return sanitize($_POST[$str]);
             } else {
                 //ない場合（フォームにエラーがある＝POSTされているはずなので，あり得ないが　）
-                return $dbFormData[$str];
+                return sanitize($dbFormData[$str]);
             }
         } else {
             //POSTにデータがあり，DBの情報と違う場合（このフォームに変更して居てエラーはないが，他のフォームで引っかかっている）
             if (isset($_POST[$str]) && $_POST[$str] !== $dbFormData[$str]) {
-                return $_POST[$str];
+                return sanitize($_POST[$str]);
             } else {
-                return $dbFormData[$str];
+                return sanitize($dbFormData[$str]);
             }
         }
     } else {
         if (isset($_POST[$str])) {
-            return $_POST[$str];
+            return sanitize($_POST[$str]);
         }
     }
 }

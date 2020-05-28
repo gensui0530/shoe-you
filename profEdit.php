@@ -35,6 +35,11 @@ if (!empty($_POST)) {
     $brand = $_POST['brand'];
     $size = $_POST['size'];
 
+    //画像をアップロードし，パスを格納
+    $pic = (!empty($_FILES['pic']['name'])) ? uploadImg($_FILES['pic'], 'pic') : '';
+    // 画像をPOSTしてない（登録していない）が既にDBに登録されている場合、DBのパスを入れる（POSTには反映されないので）
+    $pic = (empty($pic) && !empty($dbFormData['pic'])) ? $dbFormData['pic'] : $pic;
+
     //DB情報と入力情報が異なる場合にバリデーションを行う
     if ($dbFormData['username'] !== $username) {
         //名前の最大文字数チェック
@@ -96,8 +101,8 @@ if (!empty($_POST)) {
             //DBへ接続
             $dbh = dbConnect();
             //SQL文作成
-            $sql = 'UPDATE users SET username = :u_name, tel = :tel, zip = :zip, addr = :addr, age= :age, email = :email, size = :size, brand = :brand WHERE id = :u_id AND delete_flg = 0';
-            $data = array(':u_name' => $username, ':tel' => $tel, ':zip' => $zip, ':addr' => $addr, ':age' => $age, ':email' => $email, ':size' => $size, ':brand' => $brand, ':u_id' => $dbFormData['id']);
+            $sql = 'UPDATE users SET username = :u_name, tel = :tel, zip = :zip, addr = :addr, age= :age, email = :email, size = :size, brand = :brand, pic = :pic WHERE id = :u_id';
+            $data = array(':u_name' => $username, ':tel' => $tel, ':zip' => $zip, ':addr' => $addr, ':age' => $age, ':email' => $email, ':size' => $size, ':brand' => $brand, ':pic' => $pic, ':u_id' => $dbFormData['id']);
             //クエリ実行
             $stmt = queryPost($dbh, $sql, $data);
 
@@ -128,29 +133,45 @@ require('head.php');
     require('header.php');
     ?>
 
-    <p id="js-show-msg" style="display:none;" class="msg-slide">
-        <?php echo getSessionFlash('msg_success'); ?>
-    </p>
+
+    <!-- ナビバー　-->
+    <?php
+    require('navbar.php');
+    ?>
 
     <!-- メインコンテンツ　-->
     <div id="contents" class="site-width">
-        <!-- ナブバー -->
-        <?php
-        require('navbar.php');
-        ?>
-        <h2 class="title">Profile</h2>
+
         <!-- Main -->
         <section id="main">
             <div class="form-container">
-                <form class="from" action="" method="post">
-                    <span class=img-circle></span>
+                <h1 class="page-title">
+                    プロフィール編集
+                </h1>
+
+                <form class="form" action="" method="post" style=" margin-left:140px; height:1050px">
+                    <h2 class="title" style="margin-bottom: 20px">Profile</h2>
+                    <label class="area-drop <?php if (!empty($err_msg['pic'])) echo 'err'; ?>">
+                        <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
+                        <input type="file" name="pic" class="input-file">
+                        <img src="<?php echo getFormData('pic'); ?>" alt="" class="prev-img" style="<?php if (empty(getFormData('pic'))) echo 'display:none;' ?>">
+                    </label>
+                    <span style="margin-left: 305px">Photo</span>
+                    <div class="area-msg">
+                        <?php
+                        if (!empty($err_msg['pic'])) echo $err_msg['pic'];
+                        ?>
+
+                    </div>
+
+
                     <div class="area-msg">
                         <?php
                         if (!empty($err_msg['common'])) echo $err_msg['common'];
                         ?>
                     </div>
                     <label class="<?php if (!empty($err_msg['username'])) echo 'err'; ?>">
-                        名前
+                        Name
                         <input class="user_name" type="text" name="username" value="<?php echo getFormData('username'); ?>">
                     </label>
                     <div class="area-msg">
@@ -158,90 +179,87 @@ require('head.php');
                         if (!empty($err_msg['username'])) echo $err_msg['username']; ?>
                     </div>
 
-                    <div class="float-form1">
-                        <label class="<?php if (!empty($err_msg['tel'])) echo 'err'; ?>">
-                            TEL <span style="font-size:12px; margin-left:5px;"> ※ハイフン無しで入力下さい</span>
-                            <input type="text" name="tel" value="<?php echo getFormData('tel'); ?>">
-                        </label>
-                        <div class="area-msg">
-                            <?php
-                            if (!empty($err_msg['tel'])) echo $err_msg['tel
-                        ']; ?>
-                        </div>
-
-
-
-                        <label class="<?php if (!empty($err_msg['zip'])) echo 'err'; ?>">
-                            郵便番号 <span style="font-size:12px; margin-left:5px;"> ※ハイフン無しで入力下さい</span>
-                            <input type="text" name="zip" value="<?php echo getFormData('zip'); ?>">
-                        </label>
-                        <div class="area-msg">
-                            <?php
-                            if (!empty($err_msg['zip'])) echo $err_msg['zip
-                        ']; ?>
-                        </div>
-
-
-
-                        <label class="<?php if (!empty($err_msg['addr'])) echo 'err'; ?>">
-                            住所
-                            <input class="address" type="text" name="addr" value="<?php echo getFormData('addr'); ?>">
-                        </label>
-                        <div class="area-msg">
-                            <?php
-                            if (!empty($err_msg['addr'])) echo $err_msg['addr']; ?>
-                        </div>
-
-
-                        <label class="<?php if (!empty($err_msg['email'])) echo 'err'; ?>">
-                            Email
-                            <input type="text" name="email" value="<?php echo getFormData('email'); ?>">
-                        </label>
-                        <div class="area-msg">
-                            <?php
-                            if (!empty($err_msg['email'])) echo $err_msg['email']; ?>
-                        </div>
+                    <label class="<?php if (!empty($err_msg['tel'])) echo 'err'; ?>">
+                        TEL <span style="font-size:12px; margin-left:5px;"> ※ハイフン無しで入力下さい</span>
+                        <input type="text" name="tel" value="<?php echo getFormData('tel'); ?>">
+                    </label>
+                    <div class="area-msg">
+                        <?php
+                        if (!empty($err_msg['tel'])) echo $err_msg['tel']; ?>
                     </div>
-                    <div class="float-form2">
-                        <label class="<?php if (!empty($err_msg['age'])) echo 'err'; ?>">
-                            年齢
-                            <input type="number" name="age" value="<?php echo getFormData('age'); ?>">
-                        </label>
-                        <div class="area-msg">
-                            <?php
-                            if (!empty($err_msg['age'])) echo $err_msg['age']; ?>
-                        </div>
 
-                        <label class="<?php if (!empty($err_msg['size'])) echo 'err'; ?>">
-                            マイサイズ
-                            <input　class="my_size" type="text" name="size" value="<?php echo getFormData('size'); ?>">
-                        </label>
-                        <div class="area-msg">
-                            <?php
-                            if (!empty($err_msg['size'])) echo $err_msg['size']; ?>
-                        </div>
 
-                        <label class="<?php if (!empty($err_msg['size'])) echo 'err'; ?>">
-                            好きなブランド
-                            <input type="text" name="brand" value="<?php echo getFormData('brand'); ?>">
-                        </label>
-                        <div class="area-msg">
-                            <?php
-                            if (!empty($err_msg['brand'])) echo $err_msg['brand']; ?>
-                        </div>
+                    <label class="<?php if (!empty($err_msg['zip'])) echo 'err'; ?>">
+                        <span style="font-size:12px; margin-left:5px;"> ※ハイフン無しで入力下さい</span>
+                        <input type="text" name="zip" value="<?php echo getFormData('zip'); ?>">
+                    </label>
+                    <div class="area-msg">
+                        <?php
+                        if (!empty($err_msg['zip'])) echo $err_msg['zip']; ?>
                     </div>
+
+
+
+                    <label class="<?php if (!empty($err_msg['addr'])) echo 'err'; ?>">
+                        Address
+                        <input class="address" type="text" name="addr" value="<?php echo getFormData('addr'); ?>">
+                    </label>
+                    <div class="area-msg">
+                        <?php
+                        if (!empty($err_msg['addr'])) echo $err_msg['addr']; ?>
+                    </div>
+
+
+                    <label class="<?php if (!empty($err_msg['email'])) echo 'err'; ?>">
+                        Email
+                        <input type="text" name="email" value="<?php echo getFormData('email'); ?>">
+                    </label>
+                    <div class="area-msg">
+                        <?php
+                        if (!empty($err_msg['email'])) echo $err_msg['email']; ?>
+                    </div>
+
+                    <label class="<?php if (!empty($err_msg['age'])) echo 'err'; ?>">
+                        Age
+                        <input type="number" name="age" value="<?php echo getFormData('age'); ?>">
+                    </label>
+                    <div class="area-msg">
+                        <?php
+                        if (!empty($err_msg['age'])) echo $err_msg['age']; ?>
+                    </div>
+
+                    <label class="<?php if (!empty($err_msg['size'])) echo 'err'; ?>" style="width:20%;">
+                        My Size
+                        <div style="display: inline-flex">
+                            <input class="size" type="text" name="size" 　placeholder="25.0" value="<?php echo getFormData('size'); ?>">
+                            <span style="height:10%;  margin:20px 0px 0px 10px;">㎝</span>
+                        </div>
+                    </label>
+                    <div class=" area-msg">
+                        <?php
+                        if (!empty($err_msg['size'])) echo $err_msg['size']; ?>
+                    </div>
+
+                    <label class="<?php if (!empty($err_msg['brand'])) echo 'err'; ?>">
+                        Favorite Brand
+                        <input type="text" name="brand" value="<?php echo getFormData('brand'); ?>">
+                    </label>
+                    <div class="area-msg">
+                        <?php
+                        if (!empty($err_msg['brand'])) echo $err_msg['brand']; ?>
+                    </div>
+
                     <div class="btn-container">
                         <input type="submit" class="btn btn-mid" value="変更する">
                     </div>
+
                 </form>
             </div>
+
         </section>
-
-        <!-- footer -->
-        <?php
-        require('footer.php')
-        ?>
-
-
     </div>
+    <!-- footer -->
+    <?php
+    require('footer.php')
+    ?>
 </body>

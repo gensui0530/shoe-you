@@ -111,7 +111,7 @@ require('head.php');
     require('header.php');
     ?>
 
-    <!-- サイドバー　-->
+    <!--　ナビバー　-->
     <?php
     require('navbar.php');
     ?>
@@ -120,17 +120,17 @@ require('head.php');
         <h1 class="page-title"></h1>
         <!-- Main -->
         <section id="main">
-            <div class="form-container" style="margin-top:40px;">
+            <div class="form-container" style="margin-top:10px;">
 
-                <form action="" method="post" class="form">
-                    <h2 class="title">パスワード編集</h2>
+                <form action="" method="post" class="form" style="height: 500px">
+                    <h2 class="title">Password Edit</h2>
                     <div class="area-msg">
                         <?php
                         echo getErrMsg('common');
                         ?>
                     </div>
                     <label class="<?php if (!empty($err_msg['pass_old'])) echo 'err'; ?>">
-                        古いパスワード
+                        Old Password
                         　　　<input type="password" name="pass_old" value="<?php echo getFormData('pass_old'); ?>">
                     </label>
                     <div class="area-msg">
@@ -139,7 +139,7 @@ require('head.php');
                         ?>
                     </div>
                     <label class="<?php if (!empty($err_msg['pass_new'])) echo 'err'; ?>">
-                        新しいパスワード
+                        New Password
                         　　　<input type="password" name="pass_new" value="<?php echo getFormData('pass_new'); ?>">
                     </label>
                     <div class="area-msg">
@@ -148,7 +148,7 @@ require('head.php');
                         ?>
                     </div>
                     <label class="<?php if (!empty($err_msg['pass_new_re'])) echo 'err'; ?>">
-                        新しいパスワード（再入力）
+                        New Password_re
                         　　　<input type="password" name="pass_new_re" value="<?php echo getFormData('pass_new_re'); ?>">
                     </label>
                     <div class="area-msg">
@@ -156,7 +156,7 @@ require('head.php');
                         echo getErrMsg('pass_new_re');
                         ?>
                     </div>
-                    <div class="btn-container">
+                    <div class="btn-container" style="margin-top: 20px">
                         <input type="submit" class="btn btn-mid" value="変更">
                     </div>
                 </form>

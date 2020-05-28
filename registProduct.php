@@ -151,25 +151,28 @@ $siteTitle = (!$edit_flg) ? '商品出品登録' : '商品編集';
 require('head.php');
 ?>
 
-<body class="page-profEdit page-2colum page-logined">
+<body class="page-profEdit page-2colum">
 
     <!-- メニュー　-->
     <?php
     require('header.php');
     ?>
 
+
+
     <?php
     require('navbar.php');
     ?>
     <!-- メインコンテンツ　-->
     <div id="contents" class="site-width">
-        <h1 class="page-title">
-            <?php echo (!$edit_flg) ? '商品を出品する' : '商品を編集する'; ?>
-        </h1>
+
         <!-- メイン　-->
         <section id="main">
             <div class="form-container">
-                <form class="form" method="post" enctype="multipart/form-data" style="width: 100%;box-sizing:border-box">
+                <h1 class="page-title">
+                    <?php echo (!$edit_flg) ? '商品の情報を入力' : '商品の情報を編集'; ?>
+                </h1>
+                <form class="form" method="post" enctype="multipart/form-data" style="margin-left:90px; height:1050px; width:800px; box-sizing:border-box;">
                     <div class="area-msg">
                         <?php
                         if (!empty($err_msg['common'])) echo $err_msg['common'];
@@ -187,7 +190,7 @@ require('head.php');
                     </div>
 
                     <label class="<?php if (!empty($err_msg['category_id'])) echo 'err'; ?>">
-                        カテゴリ　<span class="label-require">必須</span>
+                        カテゴリー　<span class="label-require">必須</span>
                         　　<select name="category_id">
                             <option value="0" <?php if (getFormData('category_id') == 0) {
                                                     echo 'selected';
@@ -211,21 +214,33 @@ require('head.php');
                         ?>
                     </div>
 
-                    <label class="<?php if (!empty($err_msg['size_id'])) echo 'err'; ?>">
-                        サイズ　<span class="label-require">必須</span>
-                        <input type="text" name="size_id" style="width:60px;" 　placeholder="25.0" value="<?php echo getFormData('size_id'); ?>"> <span class="option">㎝</span>
+                    <div class=" area-msg">
+                        <?php
+                        if (!empty($err_msg['size'])) echo $err_msg['size']; ?>
+                    </div>
+
+                    <label class="<?php if (!empty($err_msg['size_id'])) echo 'err'; ?>" style="width:20%;">
+                        Size 　必須
+                        <div style="display: inline-flex">
+                            <input class="size_id" type="text" name="size_id" placeholder="25.0" value="<?php echo getFormData('size_id'); ?>">
+                            <span style="height:10%;  margin:20px 0px 0px 10px;">㎝</span>
+                        </div>
                     </label>
+                    <div class=" area-msg">
+                        <?php
+                        if (!empty($err_msg['size_id'])) echo $err_msg['size_id']; ?>
+                    </div>
                     <div class="area-msg">
                         <?php
                         if (!empty($err_msg['size_id'])) echo $err_msg['size_id'];
                         ?>
                     </div>
 
-                    <div style="overflow: hidden;">
+                    <div style=" margin-left:28px; margin-top:20px; margin-bottom:30px; overflow: hidden;">
                         <div class="imgDrop-container">
                             画像1
-                            <label class="area-drop <?php if (!empty($err_msg['pic1'])) echo 'err'; ?>">
-                                <input type="hidden" name="MAX_FILESIZE" value="3145728">
+                            <label style="margin-left:0px;" class="area-drop <?php if (!empty($err_msg['pic1'])) echo 'err'; ?>">
+                                <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
                                 <input type="file" name="pic1" class="input-file">
                                 <img src="<?php echo getFormData('pic1'); ?>" alt="" class="prev-img" style="<?php if (empty(getFormData('pic1'))) echo 'display:none;' ?>">
                                 ドラック＆ドロップ
@@ -239,8 +254,8 @@ require('head.php');
 
                         <div class="imgDrop-container">
                             画像2
-                            <label class="area-drop <?php if (!empty($err_msg['pic2'])) echo 'err'; ?>">
-                                <input type="hidden" name="MAX_FILESIZE" value="3145728">
+                            <label style="margin-left:0px;" class="area-drop <?php if (!empty($err_msg['pic2'])) echo 'err'; ?>">
+                                <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
                                 <input type="file" name="pic2" class="input-file">
                                 <img src="<?php echo getFormData('pic2'); ?>" alt="" class="prev-img" style="<?php if (empty(getFormData('pic2'))) echo 'display:none;' ?>">
                                 ドラック＆ドロップ
@@ -254,8 +269,8 @@ require('head.php');
 
                         <div class="imgDrop-container">
                             画像3
-                            <label class="area-drop <?php if (!empty($err_msg['pic3'])) echo 'err'; ?>">
-                                <input type="hidden" name="MAX_FILESIZE" value="3145728">
+                            <label style="margin-left:0px;" class="area-drop <?php if (!empty($err_msg['pic3'])) echo 'err'; ?>">
+                                <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
                                 <input type="file" name="pic3" class="input-file">
                                 <img src="<?php echo getFormData('pic2'); ?>" alt="" class="prev-img" style="<?php if (empty(getFormData('pic3'))) echo 'display:none;' ?>">
                                 ドラック＆ドロップ
@@ -269,7 +284,7 @@ require('head.php');
                     </div>
                     <label class="<?php if (!empty($err_msg['comment'])) echo 'err' ?>">
                         詳細
-                        <textarea name="comment" id="js-count" rows="10" cols="30" style="height:150px;"><?php echo getFormData('comment'); ?></textarea>
+                        <textarea name="comment" id="js-count" rows="10" cols="30" style="height:150px; border:none; background:#eaddcf;"><?php echo getFormData('comment'); ?></textarea>
                     </label>
                     <p class="counter-text"><span id="js-count-view">0</span>/500文字</p>
                     <div class="area-msg">
@@ -291,7 +306,7 @@ require('head.php');
                     </div>
 
                     <div class="btn-container">
-                        <input type="submit" class="btn btn-mid" value="<?php echo (!$edit_flg) ? '出品する' : '更新する'; ?>">
+                        <input type="submit" class="btn btn-mid" value="<?php echo (!$edit_flg) ? '出品する' : '更新する'; ?>" style=" margin-top:60px; margin-right:285px;">
                         　</div>
 
 

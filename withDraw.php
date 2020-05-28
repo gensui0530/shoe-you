@@ -77,25 +77,31 @@ require('head.php');
     require('header.php');
     ?>
 
+    <!--　ナビバー　-->
+    <?php
+    require('navbar.php');
+    ?>
+    
     <!-- メインコンテンツ　-->
     <div id="contents" class="site-width">
         <!--Main -->
         <section id=main>
             <div class="form-container">
-                <form class="form" action="" method="post">
-                    <h2 class="title">退会</h2>
+                <form class="form" action="" method="post" style="height:300px ">
+                    <h2 class="title">Leave</h2>
+                    <span style="margin-left:205px;">本当に退会してよろしいですか？</span>
                     <div class="area-msg">
                         <?php
                         if (!empty($err_msg['common'])) echo $err_msg['common'];
                         ?>
                     </div>
                     <div class="btn-container">
-                        <input type="submit" name="submit" value="退会する" class="btn btn-mid">
+                        <input style="margin-top:40px " type="submit" name="submit" value="退会する" class="btn btn-mid">
                     </div>
 
                 </form>
             </div>
-            <a href="mypage.php">＜＜back</a>
+            <a href="mypage.php">&lt;&lt; back</a>
         </section>
     </div>
     <!-- footer -->

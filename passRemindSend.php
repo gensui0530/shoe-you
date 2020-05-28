@@ -111,20 +111,20 @@ require('head.php');
     require('header.php');
     ?>
     <!-- メインコンテンツ　-->
-    <div class="from-container">
 
+    <div id="contents" class="site-width">
 
         <!--main-->
         <section id="main">
             <div class="form-container">
-                <form class="form" action="" method="post">
+                <form class="form" action="" method="post" style="height:300px">
                     <p>ご指定のメールアドレス宛にパスワード再発行用のURLと認証キーをお送りいたします</p>
                     <div class="area-msg">
                         <?php
                         if (!empty($err_msg['common'])) echo $err_msg['common'];
                         ?>
                     </div>
-                    <label class="<?php if (!empty($err_msg['email'])) echo 'err'; ?>">
+                    <label class="<?php if (!empty($err_msg['email'])) echo 'err'; ?>" style="margin-top: 40px">
                         Email
                         <input type="text" name="email" value="<?php echo getFormData('email'); ?>">
                     </label>
@@ -136,15 +136,15 @@ require('head.php');
                     <div class="btn-container">
                         <input type="submit" class="btn btn-mid" value="送信する">
                     </div>
+
+                </form>
             </div>
 
-            </form>
-    </div>
-    <a style="margin:250px; " href="mypage.php">&lt; マイページに戻る </a>
+            <a href="mypage.php">&lt;&lt; back</a>
 
-    </section>
-    </div>
 
+        </section>
+    </div>
     <!-- footer -->
     <?php
     require('footer.php');

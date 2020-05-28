@@ -77,7 +77,7 @@ if (!empty($_POST)) {
                         debug('セッション変数の中身：' . print_r($_SESSION, true));
 
                         header("Location:mypage.php"); //マイページへ
-                       } 
+                    }
                 } catch (\Exception $e) {
                     error_log('エラー発生:' . $e->getMessage());
                     $err_msg['common'] =  MSG07;
@@ -108,7 +108,7 @@ require('head.php');
             <div class="form-container">
 
 
-                <form class="form" action="" method="post">
+                <form class="form" action="" method="post" style="height:500px;">
                     <h2 class="title">Sign Up!!</h2>
                     <div class="area-msg">
                         <?php
@@ -136,7 +136,7 @@ require('head.php');
                         ?>
                     </div>
                     <label class="<?php if (!empty($err_msg['pass_re'])) echo 'err'; ?>">
-                        Password（再入力）
+                        Password_Re
                         <input type="password" name="pass_re" value="<?php if (!empty($_POST['pass_re'])) echo $_POST['pass_re']; ?>">
                     </label>
                     <div class="area-msg">

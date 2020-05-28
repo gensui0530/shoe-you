@@ -26,6 +26,7 @@
          //画像ライブレビュー
          var $dropArea = $('.area-drop');
          var $fileInput = $('.input-file');
+
          $dropArea.on('dragover', function(e) {
              e.stopPropagation();
              e.preventDefault();
@@ -54,6 +55,7 @@
 
          });
 
+
          //テキストエリアカウント
          var $countUp = $('#js-count'),
              $countView = $('#js-count-view');
@@ -61,6 +63,7 @@
              $countView.html($(this).val().length);
 
          });
+
 
      });
  </script>
