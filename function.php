@@ -335,6 +335,46 @@ function getProduct($u_id, $p_id)
     }
 }
 
+function getProductList($currentMinNum = 1, $span = 20)
+{
+    debug('商品情報を取得してます．');
+    //例外処理
+    try {
+        //DBへ接続
+        $dbh = dbConnect();
+        //件数用のSQL文作成
+        $sql = 'SELECT id FROM shoes';
+        $data = array();
+        //クエリ実行
+        $stmt = queryPost($dbh, $sql, $data);
+        $rst['total'] = $stmt->rowCount(); //総レコード数
+        $rst['total_page'] = ceil($rst['total'] / $span); //総ページ数
+        if (!$stmt) {
+            return false;
+        }
+
+
+        $sql = 'SELECT * FROM shoes';
+
+        $sql .= ' LIMIT ' . $span . ' OFFSET ' . $currentMinNum;
+        $data = array();
+        debug('SQL:' . $sql);
+        // クエリ実行
+        $stmt = queryPost($dbh, $sql, $data);
+
+        if ($stmt) {
+            //クエリ結果のデータ全レコードを格納
+            $rst['data'] = $stmt->fetchAll();
+            return $rst;
+        } else {
+            return false;
+        }
+    } catch (Exception $e) {
+        error_log('エラー発生：' . $e->getMessage());
+    }
+}
+
+
 function getCategory()
 {
     debug('カテゴリー情報を取得します．');
@@ -498,3 +538,52 @@ function uploadImg($file, $key)
         }
     }
 }
+
+//ペーシング
+// $currentPageNum : 現在のページ数
+// $totalPageNum : 総ページ数
+// $link : 検索用GETパラメータリンク
+// $pageColNum : ページネーション表示数
+function pagination( $currentPageNum, $totalPageNum, $link = '', $pageColNum = 5){
+    // 現在のページが，総ページ数と同じ　かつ　総ページ数が表示項目数以上なら，左にリンク４個出す
+    if( $currentPageNum == $totalPageNum && $totalPageNum >= $pageColNum){
+      $minPageNum = $currentPageNum - 4;
+      $maxPageNum = $currentPageNum;
+    // 現在のページが，総ページ数の1ページ前なら，左にリンク３個，右に１個出す
+    }elseif ( $currentPageNum == ($totalPageNum-1) && $totalPageNum >= $pageColNum) {
+      $minPageNum = $currentPageNum -3;
+      $maxPageNum = $currentPageNum +1;
+    // 現ページが2の場合は左にリンク１個，右にリンク３個だす．
+    }elseif ( $currentPageNum == 2 && $totalPageNum >= $pageColNum){
+      $minPageNum = $currentPageNum -1;
+      $maxPageNum = $currentPageNum +3;
+    //現ページが1の場合は左に何も出さない．右に５個出す．
+    }elseif ( $currentPageNum == 1 && $totalPageNum >= $pageColNum){
+      $minPageNum = $currentPageNum;
+      $maxPageNum = 5;
+    //総ページ数が表示項目数より少ない場合は，総ページ数をループのMAX,ループのMinを１に設定
+    }elseif($totalPageNum < $pageColNum){
+      $minPageNum = 1;
+      $maxPageNum = $totalPageNum;
+    //それ以外は左に２個出す
+    }else{
+      $minPageNum = $currentPageNum - 2;
+      $maxPageNum = $currentPageNum + 2;
+    }
+  
+    echo '<div class="pagination">';
+       echo '<ul class="pagination-list">';
+        if($currentPageNum != 1){
+        echo '<li class="list-item"><a href="?p=1'.$link.'">&lt;</a></li>';
+        }
+        for($i = $minPageNum; $i <= $maxPageNum; $i++){
+        echo '<li class="list-item ';
+        if($currentPageNum == $i ){ echo 'active'; }
+        echo '"><a href="?p=' .$i.$link.'">' .$i. '</a></li>';
+        }
+        if($currentPageNum != $maxPageNum){
+        echo '<li class="list-item"> <a href="?p='.$maxPageNum.$link.'">&gt;</a></li>';
+       }
+       echo '</ul>';
+       echo '</div>';
+  }

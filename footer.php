@@ -64,7 +64,32 @@
 
          });
 
+         var count = 8;
+         $('.panel-title').each(function() {
+             var thisText = $(this).text();
+             var textLength = thisText.length;
+             if (textLength > count) {
+                 var showText = thisText.substring(0, count);
+                 var hideText = thisText.substring(count, textLength);
+                 var insertText = showText;
+                 insertText += '<span class="hide">' + hideText + '</span>';
+                 insertText += '<span class="omit">...</span>';
+                 insertText += '<span href="" class="more"></span>';
+                 $(this).html(insertText);
 
+             };
+
+
+         });
+
+
+         $('.panel-title .hide').hide();
+         $('.panel-title .more').click(function() {
+             $(this).hide()
+                 .prev('.omit').hide()
+                 .prev('.hide').fadeIn();
+             return false;
+         });
      });
  </script>
  </body>

@@ -1,7 +1,7 @@
 <!-- メニュー　-->
 <header>
     <div class="site-width">
-        <h1><a href="index.html">Shoe You</a></h1>
+        <h1><a href="index.php">Shoe You</a></h1>
         <nav id="top-nav">
             <ul>
                 <?php
