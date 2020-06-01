@@ -374,6 +374,31 @@ function getProductList($currentMinNum = 1, $span = 20)
     }
 }
 
+function getProductOne($p_id)
+{
+    debug('商品情報を取得しています');
+    debug('商品ID:' . $p_id);
+    //例外処理
+    try {
+        //DBへ接続
+        $dbh = dbConnect();
+        //SQL文作成
+        $sql = 'SELECT p_id , p.name , p.comment, p.price, p.size_id, p.pic1, p.pic2, p.pic3, p.create_date, p.update_date, c.name AS category
+        FROM shoes AS p LEFT JOIN category AS c ON p.  category_id = c.id WHERE p.id AND p.delete_flg = 0 AND c.delete_flg = 0 ';
+        $data = array(':p_id' => $p_id);
+        //クエリ実行
+        $stmt = queryPost($dbh, $sql, $data);
+
+        if ($stmt) {
+            //クエリ結果のデータを1レコード返却
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } else {
+            return false;
+        }
+    } catch (Exception $e) {
+        error_log('エラー発生:' . $e->getMessage());
+    }
+}
 
 function getCategory()
 {
@@ -544,46 +569,76 @@ function uploadImg($file, $key)
 // $totalPageNum : 総ページ数
 // $link : 検索用GETパラメータリンク
 // $pageColNum : ページネーション表示数
-function pagination( $currentPageNum, $totalPageNum, $link = '', $pageColNum = 5){
+function pagination($currentPageNum, $totalPageNum, $link = '', $pageColNum = 5)
+{
     // 現在のページが，総ページ数と同じ　かつ　総ページ数が表示項目数以上なら，左にリンク４個出す
-    if( $currentPageNum == $totalPageNum && $totalPageNum >= $pageColNum){
-      $minPageNum = $currentPageNum - 4;
-      $maxPageNum = $currentPageNum;
-    // 現在のページが，総ページ数の1ページ前なら，左にリンク３個，右に１個出す
-    }elseif ( $currentPageNum == ($totalPageNum-1) && $totalPageNum >= $pageColNum) {
-      $minPageNum = $currentPageNum -3;
-      $maxPageNum = $currentPageNum +1;
-    // 現ページが2の場合は左にリンク１個，右にリンク３個だす．
-    }elseif ( $currentPageNum == 2 && $totalPageNum >= $pageColNum){
-      $minPageNum = $currentPageNum -1;
-      $maxPageNum = $currentPageNum +3;
-    //現ページが1の場合は左に何も出さない．右に５個出す．
-    }elseif ( $currentPageNum == 1 && $totalPageNum >= $pageColNum){
-      $minPageNum = $currentPageNum;
-      $maxPageNum = 5;
-    //総ページ数が表示項目数より少ない場合は，総ページ数をループのMAX,ループのMinを１に設定
-    }elseif($totalPageNum < $pageColNum){
-      $minPageNum = 1;
-      $maxPageNum = $totalPageNum;
-    //それ以外は左に２個出す
-    }else{
-      $minPageNum = $currentPageNum - 2;
-      $maxPageNum = $currentPageNum + 2;
+    if ($currentPageNum == $totalPageNum && $totalPageNum >= $pageColNum) {
+        $minPageNum = $currentPageNum - 4;
+        $maxPageNum = $currentPageNum;
+        // 現在のページが，総ページ数の1ページ前なら，左にリンク３個，右に１個出す
+    } elseif ($currentPageNum == ($totalPageNum - 1) && $totalPageNum >= $pageColNum) {
+        $minPageNum = $currentPageNum - 3;
+        $maxPageNum = $currentPageNum + 1;
+        // 現ページが2の場合は左にリンク１個，右にリンク３個だす．
+    } elseif ($currentPageNum == 2 && $totalPageNum >= $pageColNum) {
+        $minPageNum = $currentPageNum - 1;
+        $maxPageNum = $currentPageNum + 3;
+        //現ページが1の場合は左に何も出さない．右に５個出す．
+    } elseif ($currentPageNum == 1 && $totalPageNum >= $pageColNum) {
+        $minPageNum = $currentPageNum;
+        $maxPageNum = 5;
+        //総ページ数が表示項目数より少ない場合は，総ページ数をループのMAX,ループのMinを１に設定
+    } elseif ($totalPageNum < $pageColNum) {
+        $minPageNum = 1;
+        $maxPageNum = $totalPageNum;
+        //それ以外は左に２個出す
+    } else {
+        $minPageNum = $currentPageNum - 2;
+        $maxPageNum = $currentPageNum + 2;
     }
-  
+
     echo '<div class="pagination">';
-       echo '<ul class="pagination-list">';
-        if($currentPageNum != 1){
-        echo '<li class="list-item"><a href="?p=1'.$link.'">&lt;</a></li>';
-        }
-        for($i = $minPageNum; $i <= $maxPageNum; $i++){
+    echo '<ul class="pagination-list">';
+    if ($currentPageNum != 1) {
+        echo '<li class="list-item"><a href="?p=1' . $link . '">&lt;</a></li>';
+    }
+    for ($i = $minPageNum; $i <= $maxPageNum; $i++) {
         echo '<li class="list-item ';
-        if($currentPageNum == $i ){ echo 'active'; }
-        echo '"><a href="?p=' .$i.$link.'">' .$i. '</a></li>';
+        if ($currentPageNum == $i) {
+            echo 'active';
         }
-        if($currentPageNum != $maxPageNum){
-        echo '<li class="list-item"> <a href="?p='.$maxPageNum.$link.'">&gt;</a></li>';
-       }
-       echo '</ul>';
-       echo '</div>';
-  }
+        echo '"><a href="?p=' . $i . $link . '">' . $i . '</a></li>';
+    }
+    if ($currentPageNum != $maxPageNum) {
+        echo '<li class="list-item"> <a href="?p=' . $maxPageNum . $link . '">&gt;</a></li>';
+    }
+    echo '</ul>';
+    echo '</div>';
+}
+
+//画面表示用関数
+function showImg($path)
+{
+    if (empty($path)) {
+        return 'img/sample-img.png';
+    } else {
+        return $path;
+    }
+}
+
+//GETパラメーター付与
+// $del_key : 付与から取り除きたいGETパラメーターのキー
+function appendGetParam($arr_del_key)
+{
+    if (!empty($_GET)) {
+        $str = '?';
+        foreach ($_GET as $key => $val) {
+            if (!in_array($key, $arr_del_key, true)) {
+                $str .= $key . '=' . $val . '&';
+            }
+        }
+
+        $str = mb_substr($str, 0, -1, "UTF-8");
+        echo $str;
+    }
+}

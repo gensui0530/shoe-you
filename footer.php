@@ -56,6 +56,7 @@
          });
 
 
+
          //テキストエリアカウント
          var $countUp = $('#js-count'),
              $countView = $('#js-count-view');
@@ -64,7 +65,16 @@
 
          });
 
-         var count = 8;
+         //画面切替
+         var $switchImgSub = $('.js-switch-img-sub'),
+             $switchImgMain = $('#js-switch-img-main');
+         $switchImgSubs.on('click', function(e) {
+             $switchImgMain.attr('src', $(this).attr('src'));
+
+         });
+
+         //panel内文章の省略
+         var count = 15;
          $('.panel-title').each(function() {
              var thisText = $(this).text();
              var textLength = thisText.length;
@@ -74,7 +84,6 @@
                  var insertText = showText;
                  insertText += '<span class="hide">' + hideText + '</span>';
                  insertText += '<span class="omit">...</span>';
-                 insertText += '<span href="" class="more"></span>';
                  $(this).html(insertText);
 
              };
@@ -82,14 +91,6 @@
 
          });
 
-
-         $('.panel-title .hide').hide();
-         $('.panel-title .more').click(function() {
-             $(this).hide()
-                 .prev('.omit').hide()
-                 .prev('.hide').fadeIn();
-             return false;
-         });
      });
  </script>
  </body>

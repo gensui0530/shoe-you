@@ -87,7 +87,7 @@ require('head.php');
             <div class="search-title">
                 <div class="search-left">
                     <span class="total-num">
-                        <?php echo sanitize($dbProductData['total']); ?></span>件の商品が見つかりました
+                        <?php echo sanitize($dbProductData['total']); ?></span>件の素敵な靴があります
                 </div>
                 <div class="search-right">
                     <span class="num">
