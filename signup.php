@@ -144,7 +144,7 @@ require('head.php');
                         if (!empty($err_msg['pass_re'])) echo $err_msg['pass_re'];
                         ?>
                     </div>
-                    <div class="btn-container">
+                    <div class="btn-container" style="margin-right: 23px;">
                         <input type="submit" class="btn btn-mid" value="登録">
                     </div>
 

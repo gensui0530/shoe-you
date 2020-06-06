@@ -19,7 +19,11 @@
                 <?php
                 }
                 ?>
+
             </ul>
         </nav>
+        <p id="js-show-msg" style="display:none;" class="msg-slide">
+            <?php echo getSessionFlash('msg_success'); ?>
+        </p>
     </div>
 </header>

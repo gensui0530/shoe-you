@@ -3,7 +3,7 @@ body {
   padding: 0;
   color: #f9f4ef;
   line-height: 150%;
-  font-family: 'Lobster', cursive;
+  font-family: "Lobster", cursive;
 }
 
 h1,
@@ -46,15 +46,15 @@ a:hover {
     フォント
   ========================================*/
 .num {
-  font-family: 'Caladea', serif;
+  font-family: "Caladea", serif;
 }
 
 .price {
   display: block;
   font-weight: bold;
-  font-family: 'Caladea', serif;
+  font-family: "Caladea", serif;
   position: absolute;
-  top: 140px;
+  top: 130px;
   color: #fffffe;
   background-color: rgb(2, 8, 38, 0.7);
   padding: 3px;
@@ -76,7 +76,7 @@ header h1 {
   padding-left: 15px;
   text-align: center;
   font-size: 40px;
-  font-family: 'Lobster', cursive;
+  font-family: "Lobster", cursive;
   line-height: 80px;
 }
 
@@ -176,7 +176,7 @@ nav a {
 
 section h1.title {
   text-align: center;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 #contents {
@@ -271,7 +271,7 @@ footer a {
   background: #f25042;
   color: #020826;
   text-decoration: none;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .pagination .list-item.active a {
@@ -310,7 +310,7 @@ footer a {
   padding-right: 5px;
   font-weight: bold;
   font-size: 18px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 /*=========================================
     リスト
@@ -456,17 +456,17 @@ input[type="text"], input[type="password"]/* Lesson9で追加 */, input[type="nu
   border: none;
   background: #eaddcf;
 }
-input[type='checkbox'] {
+input[type="checkbox"] {
   width: 18px;
   height: 18px;
   vertical-align: middle;
   background: #fffffe;
 }
-input[type='number'] {
+input[type="number"] {
   width: 100px;
   text-align: left;
 }
-input[type='submit'] {
+input[type="submit"] {
   font-size: 14px;
   margin: 15px 0;
   padding: 10px 40px;
@@ -477,7 +477,7 @@ input[type='submit'] {
 }
 
 select:hover,
-input[type='submit']:hover {
+input[type="submit"]:hover {
   cursor: pointer;
 }
 

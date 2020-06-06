@@ -65,13 +65,7 @@
 
          });
 
-         //画面切替
-         var $switchImgSub = $('.js-switch-img-sub'),
-             $switchImgMain = $('#js-switch-img-main');
-         $switchImgSubs.on('click', function(e) {
-             $switchImgMain.attr('src', $(this).attr('src'));
 
-         });
 
          //panel内文章の省略
          var count = 15;
@@ -88,6 +82,14 @@
 
              };
 
+
+         });
+
+         //画面切替
+         var $switchImgSubs = $('.js-switch-img-sub'),
+             $switchImgMain = $('#js-switch-img-main');
+         $switchImgSubs.on('click', function(e) {
+             $switchImgMain.attr('src', $(this).attr('src'));
 
          });
 

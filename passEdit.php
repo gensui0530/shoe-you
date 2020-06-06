@@ -156,7 +156,7 @@ require('head.php');
                         echo getErrMsg('pass_new_re');
                         ?>
                     </div>
-                    <div class="btn-container" style="margin-top: 20px">
+                    <div class="btn-container" style="margin-top: 20px; margin-right:20px;">
                         <input type="submit" class="btn btn-mid" value="変更">
                     </div>
                 </form>

@@ -383,8 +383,8 @@ function getProductOne($p_id)
         //DBへ接続
         $dbh = dbConnect();
         //SQL文作成
-        $sql = 'SELECT p_id , p.name , p.comment, p.price, p.size_id, p.pic1, p.pic2, p.pic3, p.create_date, p.update_date, c.name AS category
-        FROM shoes AS p LEFT JOIN category AS c ON p.  category_id = c.id WHERE p.id AND p.delete_flg = 0 AND c.delete_flg = 0 ';
+        $sql = 'SELECT p.id , p.user_id, p.name, p.comment, p.price, p.size_id, p.pic1, p.pic2, p.pic3, p.create_date, p.update_date, c.name AS category
+        FROM shoes AS p LEFT JOIN category AS c ON p.category_id = c.id WHERE p.id = :p_id AND p.delete_flg = 0 AND c.delete_flg = 0 ';
         $data = array(':p_id' => $p_id);
         //クエリ実行
         $stmt = queryPost($dbh, $sql, $data);

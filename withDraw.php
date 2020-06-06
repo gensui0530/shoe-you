@@ -81,7 +81,7 @@ require('head.php');
     <?php
     require('navbar.php');
     ?>
-    
+
     <!-- メインコンテンツ　-->
     <div id="contents" class="site-width">
         <!--Main -->
@@ -96,7 +96,7 @@ require('head.php');
                         ?>
                     </div>
                     <div class="btn-container">
-                        <input style="margin-top:40px " type="submit" name="submit" value="退会する" class="btn btn-mid">
+                        <input style="margin-top:40px; margin-right:260px; " type="submit" name="submit" value="退会する" class="btn btn-mid">
                     </div>
 
                 </form>

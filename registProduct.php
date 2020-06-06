@@ -169,7 +169,7 @@ require('head.php');
         <!-- メイン　-->
         <section id="main">
             <div class="form-container">
-                <h1 class="page-title">
+                <h1 class="page-title" style="margin-right:20px;">
                     <?php echo (!$edit_flg) ? '商品の情報を入力' : '商品の情報を編集'; ?>
                 </h1>
                 <form class="form" method="post" enctype="multipart/form-data" style="margin-left:90px; height:1050px; width:800px; box-sizing:border-box;">
@@ -306,7 +306,7 @@ require('head.php');
                     </div>
 
                     <div class="btn-container">
-                        <input type="submit" class="btn btn-mid" value="<?php echo (!$edit_flg) ? '出品する' : '更新する'; ?>" style=" margin-top:60px; margin-right:285px;">
+                        <input type="submit" class="btn btn-mid" value="<?php echo (!$edit_flg) ? '出品する' : '更新する'; ?>" style=" margin-top:60px; margin-right:300px;">
                         　</div>
 
 
