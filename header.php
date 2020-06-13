@@ -4,6 +4,7 @@
         <h1><a href="index.php">Shoe You</a></h1>
         <nav id="top-nav">
             <ul>
+
                 <?php
                 if (empty($_SESSION['user_id'])) {
                 ?>
@@ -13,6 +14,7 @@
                 <?php
                 } else {
                 ?>
+                    <img src="<?php echo getUser('pic'); ?>" alt="" class="top-img" style="<?php if (empty(getUser('pic'))) echo 'display:none;' ?>">
                     <li><a href="mypage.php" class="btn-flat-border">My Page</a></li>
                     <li><a href="logout.php">Logout</a></li>
 

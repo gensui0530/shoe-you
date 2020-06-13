@@ -149,26 +149,25 @@ require('head.php');
                     プロフィール編集
                 </h1>
 
-                <form class="form" action="" method="post" style=" margin-left:140px; height:1050px">
-                    <h2 class="title" style="margin-bottom: 20px">Profile</h2>
-                    <label class="area-drop <?php if (!empty($err_msg['pic'])) echo 'err'; ?>">
-                        <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
-                        <input type="file" name="pic" class="input-file">
-                        <img src="<?php echo getFormData('pic'); ?>" alt="" class="prev-img" style="<?php if (empty(getFormData('pic'))) echo 'display:none;' ?>">
-                    </label>
-                    <span style="margin-left: 305px">Photo</span>
-                    <div class="area-msg">
-                        <?php
-                        if (!empty($err_msg['pic'])) echo $err_msg['pic'];
-                        ?>
-
-                    </div>
-
+                <form class="form" action="" method="post" enctype="multipart/form-data" style=" margin-left:140px; height:1050px">
 
                     <div class="area-msg">
                         <?php
                         if (!empty($err_msg['common'])) echo $err_msg['common'];
                         ?>
+                    </div>
+                    <div class="imgDrop-container" style="margin-left:120px; margin-bottom:15px; width:100%;">
+                        <label style="width: 150px; height: 150px; border-radius: 50%; -moz-border-radius: 50%; -webkit-border-radius: 50%;" class="area-drop" <?php if (!empty($err_msg['pic'])) echo 'err'; ?>>
+                            <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
+                            <input style="" type="file" name="pic" class="input-file">
+                            <img style="display:none; width: 150px; height: 150px; border-radius: 50%; -moz-border-radius: 50%; -webkit-border-radius: 50%;" src="<?php echo getFormData('pic'); ?>" class="prev-img " style="<?php if (empty(getFormData('pic'))) echo 'display:none;' ?>">
+                            photo
+                        </label>
+                        <div class="area-msg">
+                            <?php
+                            if (!empty($err_msg['pic'])) echo $err_msg['pic'];
+                            ?>
+                        </div>
                     </div>
                     <label class="<?php if (!empty($err_msg['username'])) echo 'err'; ?>">
                         Name

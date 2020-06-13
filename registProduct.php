@@ -241,8 +241,8 @@ require('head.php');
                             画像1
                             <label style="margin-left:0px;" class="area-drop <?php if (!empty($err_msg['pic1'])) echo 'err'; ?>">
                                 <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
-                                <input type="file" name="pic1" class="input-file">
-                                <img src="<?php echo getFormData('pic1'); ?>" alt="" class="prev-img" style="<?php if (empty(getFormData('pic1'))) echo 'display:none;' ?>">
+                                <input type="file" name="pic1" class="input-file prof-input-file">
+                                <img src="<?php echo getFormData('pic1'); ?>" class=" prof-img prev-img" style="<?php if (empty(getFormData('pic1'))) echo 'display:none;' ?>">
                                 ドラック＆ドロップ
                             </label>
                             <div class="area-msg">

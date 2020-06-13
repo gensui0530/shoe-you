@@ -148,7 +148,7 @@ require('head.php');
     }
 
     .price-container .price {
-        top: 950px;
+        top: 980px;
         left: 420px;
         font-size: 42px;
         color: #020826;
@@ -195,13 +195,12 @@ require('header.php');
 <?php
 require('navbar.php');
 ?>
-
-<div id='contents' class="site-width" style="border:solid 2px #8c7851;">
+<div id='contents' class="site-width" style="border:solid 2px #8c7851; margin-top:50px;">
 
     <section id="main">
         <p class="badge"> <?php echo sanitize($viewData['category']); ?></p>
         <div class="title">
-            <?php echo sanitize($viewData['name']); ?>s
+            <?php echo sanitize($viewData['name']); ?>
         </div>
         <div class="size_data">
             <?php echo sanitize($viewData['size_id']); ?><span>㎝</span>
@@ -229,7 +228,7 @@ require('navbar.php');
         </div>
         <div class="product-buy">
             <div class="item-left">
-                <a href="index.php<?php appendGetParam(array('p_id')); ?>">&lt; 商品一覧に戻る</a>
+                <a href="index.php<?php echo appendGetParam(array('p_id')); ?>">&lt; 商品一覧に戻る</a>
             </div>
         </div>
     </section>

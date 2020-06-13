@@ -149,7 +149,7 @@ require('head.php');
                     <div class="btn-container" style="margin-top:20px; margin-right:10px; ">
                         <input type="submit" class="btn btn-mid" value="ログイン">
                     </div>
-                    パスワードを忘れた方は<a href="passRemindSend.php">コチラ</a>
+                    パスワードを忘れた方は<a style="color:blue" href="passRemindSend.php">コチラ</a>
 
                 </form>
             </div>

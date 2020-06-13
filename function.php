@@ -259,15 +259,8 @@ function dbConnect()
     $dbh = new PDO($dsn, $user, $password, $options);
     return $dbh;
 }
-//function queryPost($dbh, $sql, $data)
-//{
 
-//クエリー作成
-//$stmt = $dbh->prepare($sql);
-//プレースホルダーに値をセットし，SQL文を実行
-//$stmt->execute($data);
-//return $stmt;
-//}
+
 function queryPost($dbh, $sql, $data)
 {
     //クエリー作成
@@ -335,7 +328,7 @@ function getProduct($u_id, $p_id)
     }
 }
 
-function getProductList($currentMinNum = 1, $span = 20)
+function getProductList($currentMinNum = 1, $category, $sort,  $span = 20)
 {
     debug('商品情報を取得してます．');
     //例外処理
@@ -344,6 +337,19 @@ function getProductList($currentMinNum = 1, $span = 20)
         $dbh = dbConnect();
         //件数用のSQL文作成
         $sql = 'SELECT id FROM shoes';
+        if (!empty($category)) $sql .= ' WHERE category_id = ' . $category;
+        if (!empty($sort)) {
+            switch ($sort) {
+                case 1:
+                    $sql .= ' ORDER BY price ASC';
+                    break;
+
+                case 2:
+                    $sql .= ' ORDER BY price DESC';
+                    break;
+            }
+        }
+
         $data = array();
         //クエリ実行
         $stmt = queryPost($dbh, $sql, $data);
@@ -354,7 +360,20 @@ function getProductList($currentMinNum = 1, $span = 20)
         }
 
 
+        //ペーシング用のSQL文作成
         $sql = 'SELECT * FROM shoes';
+        if (!empty($category)) $sql .= ' WHERE category_id = ' . $category;
+        if (!empty($sort)) {
+            switch ($sort) {
+                case 1:
+                    $sql .= ' ORDER BY price ASC';
+                    break;
+
+                case 2:
+                    $sql .= ' ORDER BY price DESC';
+                    break;
+            }
+        }
 
         $sql .= ' LIMIT ' . $span . ' OFFSET ' . $currentMinNum;
         $data = array();
@@ -458,8 +477,13 @@ function sanitize($str)
 }
 
 //フォーム入力保持
-function getFormData($str)
+function getFormData($str, $flg = false)
 {
+    if ($flg) {
+        $method = $_GET;
+    } else {
+        $method = $_POST;
+    }
     global $dbFormData;
     global $err_msg;
     //ユーザーデータがある場合
@@ -467,23 +491,23 @@ function getFormData($str)
         //フォームのエラーがある場合
         if (!empty($err_msg[$str])) {
             //POSTにデータがある場合
-            if (isset($_POST[$str])) {
-                return sanitize($_POST[$str]);
+            if (isset($method[$str])) {
+                return sanitize($method[$str]);
             } else {
                 //ない場合（フォームにエラーがある＝POSTされているはずなので，あり得ないが　）
                 return sanitize($dbFormData[$str]);
             }
         } else {
             //POSTにデータがあり，DBの情報と違う場合（このフォームに変更して居てエラーはないが，他のフォームで引っかかっている）
-            if (isset($_POST[$str]) && $_POST[$str] !== $dbFormData[$str]) {
+            if (isset($method[$str]) && $method[$str] !== $dbFormData[$str]) {
                 return sanitize($_POST[$str]);
             } else {
                 return sanitize($dbFormData[$str]);
             }
         }
     } else {
-        if (isset($_POST[$str])) {
-            return sanitize($_POST[$str]);
+        if (isset($method[$str])) {
+            return sanitize($method[$str]);
         }
     }
 }
@@ -600,17 +624,17 @@ function pagination($currentPageNum, $totalPageNum, $link = '', $pageColNum = 5)
     echo '<div class="pagination">';
     echo '<ul class="pagination-list">';
     if ($currentPageNum != 1) {
-        echo '<li class="list-item"><a href="?p=1' . $link . '">&lt;</a></li>';
+        echo '<li class="list-item"><a href="#contents ?p=1' . $link . '#contents">&lt;</a></li>';
     }
     for ($i = $minPageNum; $i <= $maxPageNum; $i++) {
         echo '<li class="list-item ';
         if ($currentPageNum == $i) {
             echo 'active';
         }
-        echo '"><a href="?p=' . $i . $link . '">' . $i . '</a></li>';
+        echo '"><a href=" ?p=' . $i . $link . '#contents">' . $i . '</a></li>';
     }
     if ($currentPageNum != $maxPageNum) {
-        echo '<li class="list-item"> <a href="?p=' . $maxPageNum . $link . '">&gt;</a></li>';
+        echo '<li class="list-item"> <a href=" ?p=' . $maxPageNum . $link . '#contents">&gt;</a></li>';
     }
     echo '</ul>';
     echo '</div>';
@@ -628,7 +652,7 @@ function showImg($path)
 
 //GETパラメーター付与
 // $del_key : 付与から取り除きたいGETパラメーターのキー
-function appendGetParam($arr_del_key)
+function appendGetParam($arr_del_key = array())
 {
     if (!empty($_GET)) {
         $str = '?';
@@ -639,6 +663,6 @@ function appendGetParam($arr_del_key)
         }
 
         $str = mb_substr($str, 0, -1, "UTF-8");
-        echo $str;
+        return $str;
     }
 }

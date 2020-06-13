@@ -64,6 +64,7 @@ if (!empty($_POST)) {
                     //クエリ実行
                     $stmt = queryPost($dbh, $sql, $data);
 
+
                     //クエリ成功の場合
                     if ($stmt) {
                         //ログイン有効期限（デフォルトを1時間とする）
@@ -144,7 +145,7 @@ require('head.php');
                         if (!empty($err_msg['pass_re'])) echo $err_msg['pass_re'];
                         ?>
                     </div>
-                    <div class="btn-container" style="margin-right: 23px;">
+                    <div class="btn-container" style="margin-right:23px;">
                         <input type="submit" class="btn btn-mid" value="登録">
                     </div>
 
