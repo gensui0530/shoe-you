@@ -1,5 +1,8 @@
 <?php
-
+//=================================
+//時間設定
+//=================================
+date_default_timezone_set('Asia/Tokyo');
 //=================================
 //ログ
 //=================================
@@ -48,6 +51,9 @@ function debugLogStart()
         debug('ログイン期限制限日時タイムスタンプ:' . ($_SESSION['login_date'] + $_SESSION['login_limit']));
     }
 }
+
+
+
 
 //================================
 // 定数
@@ -419,6 +425,33 @@ function getProductOne($p_id)
     }
 }
 
+function getMsgsAndBoard($id)
+{
+    debug('msg情報を取得します');
+    debug('掲示板ID：' . $id);
+    //例外処理
+    try {
+        //DBへ接続
+        $dbh = dbConnect();
+        // SQL文作成
+        $sql = 'SELECT m.id AS m_id, product_id, board_id, send_date, to_user, from_user, sale_user, buy_user, msg, b.create_date FROM message AS m RIGHT JOIN board AS b ON b.id = m.board_id WHERE b.id = :id ORDER BY send_date ASC';
+        $data = array(':id' => $id);
+        debug('getMsgsAndBoardの$dataの中身：' . print_r($data, true));
+        //クエリ実行
+        $stmt = queryPost($dbh, $sql, $data);
+        debug('$stmtの中身：' . print_r($stmt, true));
+
+        if ($stmt) {
+            //クエリ結果の全データを返却
+            return $stmt->fetchAll();
+        } else {
+            return false;
+        }
+    } catch (Exception $e) {
+        error_log('エラー発生：' . $e->getMessage());
+    }
+}
+
 function getCategory()
 {
     debug('カテゴリー情報を取得します．');
@@ -624,7 +657,7 @@ function pagination($currentPageNum, $totalPageNum, $link = '', $pageColNum = 5)
     echo '<div class="pagination">';
     echo '<ul class="pagination-list">';
     if ($currentPageNum != 1) {
-        echo '<li class="list-item"><a href="#contents ?p=1' . $link . '#contents">&lt;</a></li>';
+        echo '<li class="list-item"><a href="?p=1' . $link . '#contents">&lt;</a></li>';
     }
     for ($i = $minPageNum; $i <= $maxPageNum; $i++) {
         echo '<li class="list-item ';

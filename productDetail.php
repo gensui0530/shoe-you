@@ -36,8 +36,8 @@ if (!empty($_POST['submit'])) {
         //DBへ接続
         $dbh = dbConnect();
         //SQL文作成
-        $sql = 'INSERT INTO bord (sale_user, buy_user, product_id, create_date) VALUES (:s_uid, :b_uid, :p_id, :date )';
-        $data = array(':s_uid' => $viewData['user_id'], ':b_uid' => $_SESSION['user_id'], 'p_id' => $p_id, ':date' => date('Y-m-d H:i:s'));
+        $sql = 'INSERT INTO board (sale_user, buy_user, product_id, create_date) VALUES (:s_uid, :b_uid, :p_id, :date )';
+        $data = array(':s_uid' => $viewData['user_id'], ':b_uid' => $_SESSION['user_id'], ':p_id' => $p_id, ':date' => date('Y-m-d H:i:s'));
         //クエリ実行
         $stmt = queryPost($dbh, $sql, $data);
 
@@ -45,7 +45,7 @@ if (!empty($_POST['submit'])) {
         if ($stmt) {
             $_SESSION['msg_success'] = SUC05;
             debug('連絡掲示板に遷移します');
-            header("Location:msg.php");
+            header("Location:msg.php?m_id=" . $dbh->lastInsertId());
         }
     } catch (Exception $e) {
         error_log('エラー発生：' . $e->getMessage());
@@ -105,6 +105,8 @@ require('head.php');
         margin-bottom: 30px;
         background: #b6a489;
         line-height: 0;
+        object-fit: cover;
+
 
     }
 
@@ -118,6 +120,7 @@ require('head.php');
         padding: 10px;
         background: #eaddcf;
         margin: 10px;
+        object-fit: cover;
     }
 
 
@@ -141,6 +144,7 @@ require('head.php');
         margin-left: 80px;
         min-height: 150px;
         width: 800px;
+        color: #020826;
     }
 
     .price-container {

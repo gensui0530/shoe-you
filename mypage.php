@@ -14,7 +14,7 @@ require('auth.php');
 
 
 <?php
-$siteTitle = 'Sign up';
+$siteTitle = '';
 require('head.php');
 ?>
 
@@ -29,6 +29,9 @@ require('head.php');
     require('navbar.php');
     ?>
 
+    <p id="js-show-msg" style="display: none;" class="msg-slide">
+        <?php echo getSessionFlash('msg_success'); ?>
+    </p>
 
 
     <?php

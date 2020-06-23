@@ -3,7 +3,7 @@
      Copyright <a href="">Shoe You</a>. All Rights Reserved.
  </footer>
 
- <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+ <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
  <script>
      $(function() {
          var $ftr = $('#footer');
@@ -93,7 +93,10 @@
 
          });
 
-
+         //scrollHeightは要素のスクロールビューの高さを取得するもの
+         $('#js-scroll-bottom').animate({
+             scrollTop: $('#js-scroll-bottom')[0].scrollHeight
+         }, 'fast');
 
      });
  </script>

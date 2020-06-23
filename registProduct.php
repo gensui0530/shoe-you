@@ -230,11 +230,6 @@ require('head.php');
                         <?php
                         if (!empty($err_msg['size_id'])) echo $err_msg['size_id']; ?>
                     </div>
-                    <div class="area-msg">
-                        <?php
-                        if (!empty($err_msg['size_id'])) echo $err_msg['size_id'];
-                        ?>
-                    </div>
 
                     <div style=" margin-left:28px; margin-top:20px; margin-bottom:30px; overflow: hidden;">
                         <div class="imgDrop-container">

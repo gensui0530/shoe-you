@@ -108,7 +108,7 @@ if (!empty($_POST)) {
 
             // クエリ成功の場合
             if ($stmt) {
-                $_SESSION['msg-success'] = SUC02;
+                $_SESSION['msg_success'] = SUC02;
                 debug('マイページへ遷移します');
                 header("Location:mypage.php"); //マイページへ
             }
@@ -139,6 +139,11 @@ require('head.php');
     require('navbar.php');
     ?>
 
+    <p id="js-show-msg" style="display: none;" class="msg-slide">
+        <?php echo getSessionFlash('msg_success'); ?>
+    </p>
+
+
     <!-- メインコンテンツ　-->
     <div id="contents" class="site-width">
 
@@ -160,7 +165,7 @@ require('head.php');
                         <label style="width: 150px; height: 150px; border-radius: 50%; -moz-border-radius: 50%; -webkit-border-radius: 50%;" class="area-drop" <?php if (!empty($err_msg['pic'])) echo 'err'; ?>>
                             <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
                             <input style="" type="file" name="pic" class="input-file">
-                            <img style="display:none; width: 150px; height: 150px; border-radius: 50%; -moz-border-radius: 50%; -webkit-border-radius: 50%;" src="<?php echo getFormData('pic'); ?>" class="prev-img " style="<?php if (empty(getFormData('pic'))) echo 'display:none;' ?>">
+                            <img src="<?php echo getFormData('pic'); ?>" id="circle-img" class="prev-img " style="<?php if (empty(getFormData('pic'))) echo 'display:none;' ?>">
                             photo
                         </label>
                         <div class="area-msg">
