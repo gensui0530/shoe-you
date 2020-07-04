@@ -239,6 +239,31 @@ function getErrMsg($key)
     }
 }
 
+//================================
+//ログイン認証
+//================================
+function isLogin()
+{
+    //ログインしている場合
+    if (!empty($_SESSION['login_date'])) {
+        debug('ログイン済みユーザーです');
+
+        //現在日時が最終ログイン日時＋有効期限を超えていた場合
+        if (($_SESSION['login_date'] + $_SESSION['login_limit']) < time()) {
+            debug('ログイン有効期限オーバーです');
+
+            //セッションを削除（ログアウトする）
+            session_destroy();
+            return false;
+        } else {
+            debug('ログイン有効期限以内です');
+            return true;
+        }
+    } else {
+        debug('未ログインユーザーです');
+        return false;
+    }
+}
 
 //================================
 // データベース
@@ -425,6 +450,33 @@ function getProductOne($p_id)
     }
 }
 
+function getMyProducts($u_id)
+{
+    debug('自分の商品情報を取得します');
+    debug('ユーザーID：' . $u_id);
+
+    //例外処理
+    try {
+        //DBへ接続
+        $dbh = dbConnect();
+        //SQL文作成
+        $sql = 'SELECT * FROM product WHERE user_id = :u_id AND delete_flg = 0';
+        $data = array(':u_id' => $u_id);
+        //クエリ実行
+        $stmt = queryPost($dbh, $sql, $data);
+
+        if ($stmt) {
+            //クエリ結果のデータを全レコード返却
+            return $stmt->fetchAll();
+        } else {
+            return false;
+        }
+    } catch (\Exception $e) {
+        error_log('エラー発生：' . $e->getMessage());
+    }
+}
+
+
 function getMsgsAndBoard($id)
 {
     debug('msg情報を取得します');
@@ -477,6 +529,60 @@ function getCategory()
     }
 }
 
+function isLike($u_id, $p_id)
+{
+    debug('お気に入り情報があるか確認します');
+    debug('ユーザーID：' . $u_id);
+    debug('商品ID：' . $p_id);
+
+    //例外処理
+    try {
+        //DBへ接続
+        $dbh = dbConnect();
+        //SQL文作成
+        $sql = 'SELECT * FROM `like` WHERE product_id = :p_id AND user_id = :u_id';
+        $data = array(':u_id' => $u_id, ':p_id' => $p_id);
+        //クエリ実行
+        $stmt = queryPost($dbh, $sql, $data);
+
+        if ($stmt->rowcount()) {
+            debug('お気に入りです');
+            return true;
+        } else {
+            debug('特に気に入っていません');
+        }
+    } catch (\Exception $e) {
+
+        error_log('エラー発生：' . $u_id);
+    }
+}
+
+
+
+function getMyLike($u_id)
+{
+    debug('自分のお気に入り情報を取得します');
+    debug('ユーザーID：' . $u_id);
+    //例外処理
+    try {
+        //DBへ接続
+        $dbh = dbConnect();
+        //SQL文作成
+        $sql = 'SELECT * FROM `like` AS　l LEFT JOIN product AS p ON l.product_id = p.id WHERE l.user_id = :u_id';
+        $data = array(':u_id' => $u_id);
+        //クエリ実行
+        $stmt = queryPost($dbh, $sql, $data);
+
+        if ($stmt) {
+            //　クエリ結果の全データを返却
+            return $stmt->fetchAll();
+        } else {
+            return false;
+        }
+    } catch (\Exception $e) {
+        error_log('エラー発生:' . $e->getMessage());
+    }
+}
 
 //================================
 // メール送信

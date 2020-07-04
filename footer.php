@@ -93,10 +93,32 @@
 
          });
 
-         //scrollHeightは要素のスクロールビューの高さを取得するもの
-         $('#js-scroll-bottom').animate({
-             scrollTop: $('#js-scroll-bottom')[0].scrollHeight
-         }, 'fast');
+         //お気に入り登録．削除
+         var $like,
+             likeProductId;
+         $like = $('.js-click-like') || null;
+         likeProductId = $like.data('productid') || null;
+         if (likeProductId !== undefined && likeProductId !== null) {
+             $like.on('click', function() {
+                 var $this = $(this);
+                 $.ajax({
+                     type: "POST",
+                     url: "ajaxLike.php",
+                     data: {
+                         productId: likeProductId
+                     }
+                 }).done(function(data) {
+                     console.log('Ajax Success');
+                     $this.toggleClass('active');
+                 }).fail(function(msg) {
+                     console.log('Ajax Error');
+                 });
+
+             });
+
+         }
+
+
 
      });
  </script>

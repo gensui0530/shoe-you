@@ -92,7 +92,7 @@ if (!empty($_POST)) {
             //SQL文作成
             $sql = 'INSERT INTO message (board_id, send_date, to_user, from_user, msg, create_date) VALUES (:b_id,
             :send_date, :to_user, :from_user, :msg, :date)';
-            $data = array(':b_id' => $m_id, ':send_date' => date('H:i'), ':to_user' => $partnerUserId, ':from_user'
+            $data = array(':b_id' => $m_id, ':send_date' => date('Y-m-d H:i:s'), ':to_user' => $partnerUserId, ':from_user'
             => $_SESSION['user_id'], ':msg' => $msg, ':date' => date('Y-m-d H:i:s'));
             //クエリ実行
             $stmt = queryPost($dbh, $sql, $data);
@@ -244,6 +244,7 @@ require('head.php');
 
         .area-board .msg-cnt.msg-right {
             float: right;
+
         }
 
         .area-board .msg-cnt.msg-right .msg-inrTxt {
@@ -254,7 +255,6 @@ require('head.php');
         .area-board .msg-cnt.msg-right .msg-inrTxt>.triangle {
             position: absolute;
             right: -20px;
-            top: -1px;
             width: 0;
             height: 0;
             border-top: 10px solid transparent;
@@ -278,12 +278,22 @@ require('head.php');
         .p-board-sendDate {
             color: #020826;
             font-size: 5px;
+
         }
 
         .u-board-sendDate {
             color: #020826;
-            margin-left: 720px;
+            margin-left: 718px;
             font-size: 5px;
+        }
+
+        .today {
+            color: #020826;
+            margin-left: 15px;
+            font-size: 12px;
+            opacity: 0.3;
+
+
         }
     </style>
 
@@ -335,6 +345,7 @@ require('head.php');
                     foreach ($viewData as $key => $val) {
                         if (!empty($val['from_user']) && $val['from_user'] == $partnerUserId) {
                 ?>
+
                             <div class="msg-cnt msg-left">
                                 <div class="avatar">
                                     <img src="<?php echo sanitize(showImg($partnerUserInfo['pic'])); ?>" class="avatar">
@@ -344,12 +355,15 @@ require('head.php');
                                     <span class="triangle"></span>
                                     <?php echo sanitize($val['msg']); ?>
                                 </p>
-                                <div class="p-board-sendDate"><?php echo date('H:i', strtotime(sanitize($val['send_date']))); ?></div>
+                                <div class="p-board-sendDate"><?php echo date('A H:i', strtotime(sanitize($val['send_date']))); ?></div>
                             </div>
+
                         <?php
                         } else {
                         ?>
-                            <div class="msg-cnt msg-right">
+                            <div class=" msg-cnt msg-right">
+                                <div class=today><?php echo date('Y/m/d', strtotime(sanitize($val['send_date']))); ?></div>
+
                                 <div class="avatar">
                                     <img src="<?php echo sanitize(showImg($myUserInfo['pic'])); ?>" class="avatar">
                                 </div>
@@ -358,8 +372,11 @@ require('head.php');
 
                                     <?php echo sanitize($val['msg']); ?>
                                 </p>
-                                <div class=u-board-sendDate><?php echo sanitize($val['send_date']); ?></div>
+                                <div class=u-board-sendDate><?php echo date('A H:i', strtotime(sanitize($val['send_date']))); ?></div>
                             </div>
+
+
+
                     <?php
                         }
                     }
@@ -370,12 +387,16 @@ require('head.php');
                 <?php
                 }
                 ?>
+
             </div>
+
             <div class="area-send-msg">
                 <form action="" method="post">
-                    <textarea name="msg" cols="20" rows="1"></textarea>
-                    <input style="margin-left: 840px" type="submit" value="送信" 　class=" btn btn-send">
+                    <textarea name="msg" cols="20" rows="1" wrap="hard"></textarea>
+                    <input style="margin-left: 840px" type="submit" value="送信" class=" btn btn-send">
                 </form>
+
+
             </div>
         </section>
 

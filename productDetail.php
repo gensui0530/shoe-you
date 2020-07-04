@@ -100,12 +100,12 @@ require('head.php');
         padding: 10px;
         box-sizing: border-box;
         width: 500px;
-        height: 350px;
+        height: 360px;
         margin-left: 245px;
         margin-bottom: 30px;
         background: #b6a489;
         line-height: 0;
-        object-fit: cover;
+        object-fit: fill;
 
 
     }
@@ -148,11 +148,12 @@ require('head.php');
     }
 
     .price-container {
-        margin-top: 60px;
+        margin-top: 50px;
+
     }
 
     .price-container .price {
-        top: 980px;
+        top: 1030px;
         left: 420px;
         font-size: 42px;
         color: #020826;
@@ -191,6 +192,44 @@ require('head.php');
     .product-buy .btn:hover {
         cursor: pointer;
     }
+
+    .base-like {
+        float: left;
+        overflow: hidden;
+        width: 100px;
+        padding: 5px;
+        border-radius: 10px;
+        background: rgb(234, 221, 207, 0.5);
+        margin-left: 650px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .icn-like {
+        float: left;
+        color: darkgray;
+        font-size: 18px;
+        margin-top: 2px;
+
+
+    }
+
+    .text-like {
+        color: #020826;
+        float: left;
+        margin-left: 5px;
+    }
+
+    .icn-like:hover {
+        cursor: pointer;
+        opacity: 0.7;
+    }
+
+    .icn-like.active {
+        float: left;
+        color: #fe8a8b;
+
+    }
 </style>
 <?php
 require('header.php');
@@ -219,8 +258,16 @@ require('navbar.php');
                 <img src="<?php echo showImg(sanitize($viewData['pic3'])); ?>" alt="画像3:<?php echo sanitize($viewData['name']); ?>" class="js-switch-img-sub">
             </div>
         </div>
+
         <div class="price-container">
             <p class="price">￥ <?php echo sanitize(number_format($viewData['price'])); ?> <span style="font-size:16px;">税込み/送料込み</span> </p>
+            <div class="base-like icn-like js-click-like <?php if (isLike($_SESSION['user_id'], $viewData['id'])) {
+                                                                echo 'active';
+                                                            } ?>" aria-hidden="true" data-productid="<?php echo sanitize($viewData['id']); ?>">
+                <i class="fas fa-heart ">
+                    <p class="text-like">いいね！</p>
+                </i>
+            </div>
         </div>
         <form action="" method="post">
             <div class="item-center">

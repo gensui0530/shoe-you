@@ -77,7 +77,7 @@ if (!empty($_POST)) {
 
                         debug('セッション変数の中身：' . print_r($_SESSION, true));
 
-                        header("Location:mypage.php"); //マイページへ
+                        header("Location:index.php"); //マイページへ
                     }
                 } catch (\Exception $e) {
                     error_log('エラー発生:' . $e->getMessage());
