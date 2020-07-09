@@ -460,7 +460,7 @@ function getMyProducts($u_id)
         //DBへ接続
         $dbh = dbConnect();
         //SQL文作成
-        $sql = 'SELECT * FROM product WHERE user_id = :u_id AND delete_flg = 0';
+        $sql = 'SELECT * FROM shoes WHERE user_id = :u_id AND delete_flg = 0';
         $data = array(':u_id' => $u_id);
         //クエリ実行
         $stmt = queryPost($dbh, $sql, $data);
@@ -557,7 +557,42 @@ function isLike($u_id, $p_id)
     }
 }
 
+function getMyMsgsAndBoard($u_id)
+{
+    debug('自分のmsg情報を取得します．');
+    //例外処理
+    try {
+        //DBへ接続
+        $dbh = dbConnect();
 
+        //　まず，掲示板レコード取得
+        //　SQL文作成
+        $sql = 'SELECT * FROM board AS b WHERE b.sale_user = :id OR b.buy_user = :id AND b.delete_flg = 0';
+        $data = array(':id' => $u_id);
+        // クエリ実行
+        $stmt = queryPost($dbh, $sql, $data);
+        $rst = $stmt->fetchAll();
+        if (!empty($rst)) {
+            foreach ($rst as $key => $val) {
+                //SQL文作成
+                $sql = 'SELECT * FROM message WHERE board_id = :id AND delete_flg = 0 ORDER BY send_date DESC';
+                $data = array(':id' => $val['id']);
+                //クエリ実行
+                $stmt = queryPost($dbh, $sql, $data);
+                $rst[$key]['msg'] = $stmt->fetchAll();
+            }
+        }
+
+        if ($stmt) {
+            // クエリ結果の全データを返却
+            return $rst;
+        } else {
+            return false;
+        }
+    } catch (Exception $e) {
+        error_log('エラー発生:' . $e->getMessage());
+    }
+}
 
 function getMyLike($u_id)
 {
@@ -568,7 +603,7 @@ function getMyLike($u_id)
         //DBへ接続
         $dbh = dbConnect();
         //SQL文作成
-        $sql = 'SELECT * FROM `like` AS　l LEFT JOIN product AS p ON l.product_id = p.id WHERE l.user_id = :u_id';
+        $sql = 'SELECT * FROM `like` AS l LEFT JOIN shoes AS p ON l.product_id = p.id WHERE l.user_id = :u_id';
         $data = array(':u_id' => $u_id);
         //クエリ実行
         $stmt = queryPost($dbh, $sql, $data);
