@@ -15,6 +15,8 @@ require('auth.php');
 $u_id = $_SESSION['user_id'];
 //DBから商品データを取得
 $productData = getMyProducts($u_id);
+
+$partnerUserData = getUser($u_id);
 //DBから連絡掲示板データを取得
 $boardData = getMyMsgsAndBoard($u_id);
 //DBからお気に入りデータを取得
@@ -33,8 +35,63 @@ debug('画面表示処理終了　<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 $siteTitle = '';
 require('head.php');
 ?>
+<style>
+    .my-page {
+        margin: 0 auto;
+        padding: 30px;
+        width: 650px;
+        height: 100%;
+        border: 2px solid #8c7851;
+        background-color: #fffffe;
+        color: #020826;
+    }
 
-<body class="page-mypage page-2colum page-logined">
+    .page-title {
+        font-size: 28px;
+        margin-right: 240px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        text-align: center;
+        color: #020826;
+    }
+
+    .price {
+        font-weight: bold;
+        font-family: "Lobster", cursive;
+        background: none;
+        color: #020826;
+        padding: 3px;
+        position: static;
+
+
+    }
+
+    .panel-list>.panel {
+        float: left;
+        box-sizing: border-box;
+        margin-bottom: 50px;
+        padding-right: 15px;
+        margin-left: 15px;
+        height: 220px;
+        width: 30%;
+        text-decoration: none;
+        line-height: 1.2em;
+    }
+
+    .panel-list>.panel img {
+        width: 100%;
+        height: 180px;
+        vertical-align: middle;
+        object-fit: cover;
+    }
+
+    .list-table>.table>tbody td {
+        border-right: none;
+        background: #eaddcf;
+    }
+</style>
+
+<body class="page-mypage page-2colum">
 
 
     <?php
@@ -55,7 +112,7 @@ require('head.php');
         <h1 class="page-title">MYPAGE</h1>
 
         <!-- Main -->
-        <section id="main">
+        <section class="my-page">
             <section class="list panel-list">
                 <h2 class="title" style="margin-bottom:15px;">
                     登録商品一覧
@@ -104,8 +161,8 @@ require('head.php');
                                     $msg = array_shift($val['msg']);
                         ?>
                                     <tr>
-                                        <td><?php echo sanitize(date('Y.m.d H:i:s', strtotime($msg['send_date']))); ?></td>
-                                        <td>◯◯ ◯◯</td>
+                                        <td><?php echo sanitize(date('Y.m.d H:i', strtotime($msg['send_date']))); ?></td>
+                                        <td><?php echo sanitize($val['id']); ?> </td>
                                         <td><a href="msg.php?m_id=<?php echo sanitize($val['id']); ?>"><?php echo mb_substr(sanitize($msg['msg']), 0, 40); ?>...</a></td>
                                     </tr>
                                 <?php
@@ -147,7 +204,7 @@ require('head.php');
                 ?>
             </section>
         </section>
-
-        <?php
-        require('footer.php');
-        ?>
+    </div>
+    <?php
+    require('footer.php');
+    ?>

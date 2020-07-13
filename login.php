@@ -80,6 +80,7 @@ if (!empty($_POST)) {
 
                 debug('セッション変数の中身:' . print_r($_SESSION, true));
                 debug('マイページへ遷移します.');
+                $_SESSION['msg_success'] = SUC06;
                 header("Location:index.php"); //マイページへ
                 exit;
             } else {
@@ -92,6 +93,7 @@ if (!empty($_POST)) {
         }
     }
 }
+
 debug('画面表示処理終了<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
 ?>
 

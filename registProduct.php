@@ -158,8 +158,6 @@ require('head.php');
     require('header.php');
     ?>
 
-
-
     <?php
     require('navbar.php');
     ?>

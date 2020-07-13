@@ -76,7 +76,7 @@ if (!empty($_POST)) {
                         $_SESSION['user_id'] = $dbh->lastInsertId();
 
                         debug('セッション変数の中身：' . print_r($_SESSION, true));
-
+                        $_SESSION['msg_success'] = SUC07;
                         header("Location:index.php"); //マイページへ
                     }
                 } catch (\Exception $e) {
